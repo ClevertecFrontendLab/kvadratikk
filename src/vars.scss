@@ -1,0 +1,98 @@
+$accent: #ff5253;
+$dark: #363636;
+$white: #ffffff;
+$dark30: #3636364d;
+
+$btn-pressed: linear-gradient(233.73deg, #f83600 -16.08%, #f9d423 327.37%);
+$btn-hover: linear-gradient(231.58deg, #f83600 -53.35%, #f9d423 297.76%);
+
+$warning: #ffbc1f;
+$positive: #00ca71;
+$negative: #f42c4f;
+$positive-back: #ebf9f1;
+$negative-back: #feebea;
+
+$gblack70: #727272;
+$gblack40: #a7a7a7;
+$gblack20: #bfc4c9;
+$gblack10: #ebebeb;
+$gblack5: #f9f9fa;
+
+@mixin subL {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+@mixin subS {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+@mixin bodyL {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+@mixin bodyL-m {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.10000000149011612px;
+}
+
+@mixin bodyS {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+@mixin bodyS-m {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+@mixin infoL {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+@mixin infoS {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+@mixin butL {
+  font-size: 16px;
+  line-height: 150%;
+  font-weight: 600;
+}
+
+@mixin butS {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+@mixin butS-m {
+  font-size: 12px;
+  letter-spacing: 0.2px;
+}
+
+@mixin h4 {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: 0.1px;
+}
+
+@mixin h5 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 700;
+}
