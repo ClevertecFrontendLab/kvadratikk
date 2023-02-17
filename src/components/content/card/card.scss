@@ -1,0 +1,131 @@
+@import '../../../vars.scss';
+
+.card {
+  padding: 8px;
+  background-color: $white;
+  box-shadow: 0px 2px 4px rgba(191, 196, 201, 0.2), 0px 3px 4px rgba(191, 196, 201, 0.18),
+    0px 1px 5px rgba(191, 196, 201, 0.24);
+  border-radius: 10px;
+  height: 100%;
+
+  a {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  &__cover {
+    margin: 0 auto;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border: 1px solid $gblack40;
+    background-color: $gblack5;
+    width: 100%;
+    max-height: 242px;
+    height: 100%;
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__rating {
+    display: flex;
+    gap: 6px;
+    color: $gblack40;
+    margin-bottom: 16px;
+
+    img {
+      max-height: 24px;
+      height: 100%;
+      max-width: 24px;
+      width: 100%;
+    }
+
+    span {
+      @include bodyS;
+    }
+  }
+
+  &__title {
+    @include subS;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__info {
+    color: $gblack70;
+    @include bodyS;
+  }
+
+  &__book {
+    max-width: 166px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px 23px;
+    margin-bottom: 8px;
+    margin-top: 19px;
+    @include butS;
+    @include butS-m;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    &__title {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 18px;
+      letter-spacing: 0em;
+    }
+
+    &__rating {
+      margin-bottom: 11px;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .card {
+    padding: 16px;
+    padding-top: 8px;
+
+    &__wrapper {
+      justify-content: start;
+    }
+
+    &__cover {
+      max-width: 174px;
+    }
+
+    &__book {
+      max-width: 256px;
+      margin-top: auto;
+      margin-bottom: 0;
+    }
+
+    &__title {
+      @include subS;
+      min-height: 0;
+      margin-bottom: 8px;
+    }
+
+    &__info {
+      @include bodyS-m;
+    }
+
+    &__rating {
+      margin-bottom: 19px;
+    }
+  }
+}

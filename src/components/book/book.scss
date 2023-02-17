@@ -1,0 +1,257 @@
+@import '../../vars.scss';
+
+.book {
+  padding-top: 42px;
+  padding-bottom: 42px;
+  display: grid;
+  gap: 0 30px;
+  grid-template-columns: 445px minmax(min-content, 635px);
+
+  .swiper {
+    max-width: 445px;
+
+    &-slide {
+      height: auto;
+    }
+
+    &-button {
+      &-prev,
+      &-next {
+        display: none;
+      }
+    }
+
+    &-pagination {
+      display: none;
+    }
+  }
+
+  &__sliders {
+    grid-row: 1 / 4;
+  }
+
+  &__slider {
+    margin-bottom: 16px;
+  }
+
+  &__thumb {
+    max-height: 86px;
+    height: 100%;
+
+    &-slide {
+      border: 1px solid transparent;
+      border-radius: 3px;
+
+      img {
+        border-radius: 3px;
+      }
+
+      &.swiper-slide-thumb-active {
+        border-image: $btn-pressed;
+        border-image-slice: 1;
+        background-image: linear-gradient(white, white), radial-gradient(circle at top left, #f00, #3020ff);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+
+        img {
+          border: none;
+        }
+      }
+    }
+  }
+
+  span {
+    display: block;
+  }
+
+  &__about {
+    max-width: 635px;
+  }
+
+  &__cover {
+    max-height: 594px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $gblack5;
+    border: 1px solid $gblack40;
+    border-radius: 10px;
+    max-width: 445px;
+    width: 100%;
+    grid-row: 1 / 4;
+    object-fit: cover;
+  }
+
+  &__title {
+    margin-bottom: 24px;
+  }
+
+  &__info {
+    color: $gblack40;
+    margin-bottom: 33px;
+  }
+
+  &__book {
+    padding: 13px 0;
+    max-width: 350px;
+    width: 100%;
+    @include butL;
+    margin-bottom: 62px;
+  }
+
+  &__descr {
+    grid-column: 2 / 2;
+
+    p:not(:last-child) {
+      margin-bottom: 25px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .book {
+    padding-top: 48px;
+    padding-bottom: 51px;
+    grid-template-columns: 136px minmax(min-content, 635px);
+    gap: 48px 32px;
+
+    .swiper {
+      &-pagination {
+        position: static;
+        display: flex;
+        margin-top: 16px;
+        align-items: center;
+        justify-content: center;
+
+        &-bullet {
+          opacity: 1;
+          width: 7px;
+          height: 7px;
+          background-color: $gblack20;
+
+          &-active {
+            background-color: $dark;
+            width: 9px;
+            height: 9px;
+          }
+        }
+      }
+    }
+
+    &__sliders {
+      grid-row: 1;
+    }
+
+    &__slider {
+      margin-bottom: 0;
+    }
+
+    &__thumb {
+      display: none !important;
+    }
+
+    &__descr {
+      grid-column: span 2;
+    }
+
+    &__cover {
+      min-width: 136px;
+      max-width: 136px;
+      min-height: 198px;
+      max-height: 198px;
+      grid-row: auto;
+    }
+
+    &__title {
+      @include h4;
+      margin-bottom: 31px;
+    }
+
+    &__info {
+      @include subS;
+    }
+
+    &__book {
+      padding: 13px 0;
+      margin-bottom: 0;
+      max-width: 306px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .book {
+    gap: 48px 12px;
+
+    &__book {
+      @include butS-m;
+    }
+  }
+}
+
+@media (max-width: 390px) {
+  .book {
+    padding-top: 20px;
+    padding-bottom: 42px;
+    gap: 0;
+
+    .swiper {
+      max-width: 288px;
+    }
+
+    &__sliders {
+      grid-column: span 2;
+      max-width: 188px;
+      margin: 0 auto;
+    }
+
+    &__cover {
+      min-height: 260px;
+      min-width: 188px;
+      grid-column: span 2;
+      margin: 0 auto;
+      margin-bottom: 16px;
+    }
+
+    &__title {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 28px;
+      letter-spacing: 0.10000000149011612px;
+      margin-bottom: 7px;
+    }
+
+    &__info {
+      @include bodyS-m;
+      margin-bottom: 41px;
+    }
+
+    &__flex {
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 42px;
+    }
+
+    &__about {
+      grid-column: span 2;
+      margin-bottom: 42px;
+    }
+
+    &__book {
+      width: 100%;
+      padding: 10px 0;
+      @include butS-m;
+    }
+
+    &__descr {
+      p {
+        @include bodyS-m;
+      }
+
+      p:not(:last-child) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

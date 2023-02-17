@@ -1,0 +1,35 @@
+@import '../../vars.scss';
+
+.error {
+  position: absolute;
+  top: -40px;
+  width: calc(100% - 30px);
+  border: 1.5px solid $negative;
+  background: $negative-back;
+  padding: 23px 32px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+
+  img {
+    display: inline;
+  }
+
+  span {
+    margin-left: 24px;
+    @include subL;
+  }
+
+  button {
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+  }
+
+  svg {
+    fill: $dark;
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,26 @@
+.main-page {
+  padding-top: 47px;
+  padding-bottom: 62px;
+
+  .container {
+    display: flex;
+    gap: 6px;
+    position: relative;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-page {
+    padding-top: 39px;
+
+    .menu {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .main-page {
+    padding-top: 20px;
+  }
+}

@@ -1,0 +1,75 @@
+@import '../../vars.scss';
+
+.menu {
+  max-width: 279px;
+  width: 100%;
+
+  &__profile {
+    display: none;
+  }
+
+  &__list {
+    li:not(.books *) {
+      &:not(:last-child) {
+        margin-bottom: 39px;
+      }
+    }
+  }
+
+  h5 {
+    border-bottom: 1px solid transparent;
+    max-width: 255px;
+    width: 100%;
+    text-align: left;
+
+    &.active {
+      padding-bottom: 8px;
+      border-image: $btn-hover;
+      border-image-slice: 1;
+      background: $btn-hover;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+
+      svg {
+        fill: url(#btn-hover);
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .menu {
+    max-width: 75%;
+    background-color: $gblack5;
+    padding: 32px;
+    padding-bottom: 52px;
+    top: 0;
+    left: 2.3%;
+    box-shadow: 0px 2px 4px rgba(191, 196, 201, 0.2), 0px 3px 4px rgba(191, 196, 201, 0.18),
+      0px 1px 5px rgba(191, 196, 201, 0.24);
+    border-radius: 10px;
+    z-index: 1;
+
+    &__list {
+      li:not(.books *) {
+        &:not(:last-child) {
+          margin-bottom: 42px;
+        }
+      }
+    }
+
+    &__profile {
+      display: inherit;
+      border-top: 1px solid #bfc4c9;
+      padding-top: 32px;
+      margin-top: 52px;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .menu {
+    max-width: 288px;
+    left: 16px;
+  }
+}
