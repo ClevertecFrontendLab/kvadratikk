@@ -1,7 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { BookPreview } from '../../interfaces/book-preview';
 import { GenreItem } from '../../interfaces/genre-item';
+import { getBooks, getGenres } from '../thunks';
 
 const initialState: {
   books: BookPreview[];
@@ -12,18 +13,6 @@ const initialState: {
   books: [],
   genres: [],
 };
-
-export const getBooks = createAsyncThunk('books/getBooks', async () => {
-  const response = await fetch('https://strapi.cleverland.by/api/books');
-
-  return (await response.json()) as BookPreview[];
-});
-
-export const getGenres = createAsyncThunk('books/getGenres', async () => {
-  const response = await fetch('https://strapi.cleverland.by/api/categories');
-
-  return (await response.json()) as GenreItem[];
-});
 
 export const booksSlice = createSlice({
   name: 'books',

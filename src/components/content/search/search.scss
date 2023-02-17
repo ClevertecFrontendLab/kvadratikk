@@ -33,8 +33,15 @@
 
 @media (max-width: 768px) {
   .search {
-    padding: 10px 44px 10px 40px;
+    padding: 10px 40px;
     max-width: 274px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 575px) {
+  .search {
+    flex-shrink: 1;
   }
 }
 

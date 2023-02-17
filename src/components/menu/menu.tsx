@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -16,9 +16,18 @@ export const Menu = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
 
   const isExpandedMenu = useSelector((state: RootState) => state.menu.isExpandedMenu);
 
-  document.body.addEventListener('click', (e) => {
-    if (menuRef.current && e.target !== menuRef.current) dispatch(setIsExpandedMenu(false));
-  });
+  const bodyClickFn = useCallback(
+    (e: MouseEvent) => {
+      if (menuRef.current && e.target !== menuRef.current) dispatch(setIsExpandedMenu(false));
+    },
+    [dispatch]
+  );
+
+  if (isBurgerMenu) document.body.addEventListener('click', bodyClickFn);
+
+  useEffect(() => {
+    return document.body.removeEventListener('click', bodyClickFn);
+  }, [bodyClickFn, dispatch]);
 
   return (
     <nav

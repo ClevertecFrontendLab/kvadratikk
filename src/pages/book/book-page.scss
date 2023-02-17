@@ -34,7 +34,7 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 3px 24px;
+      gap: 3px 0;
 
       img {
         width: 24px;
@@ -45,6 +45,7 @@
         display: flex;
         gap: 12px;
         align-items: center;
+        margin-right: 24px;
       }
 
       .average {

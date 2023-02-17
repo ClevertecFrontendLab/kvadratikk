@@ -12,7 +12,6 @@ import './content.scss';
 
 export const Content = () => {
   const { category } = useParams();
-
   const [display, setDisplay] = useState('tile');
   const { books, genres } = useSelector((state: RootState) => state.books);
 
@@ -47,27 +46,11 @@ export const Content = () => {
           .filter((book) => {
             const curGenre = String(genres.find((genre) => genre.path === category)?.name);
 
-            return category === 'all' ? book : book.categories.includes(curGenre);
+            return category === 'all' ? book : book.categories?.includes(curGenre);
           })
-          .map((book) => {
-            const { id, categories, title, rating, authors, issueYear, booking, image } = book;
-
-            return (
-              <Card
-                key={id}
-                id={id}
-                categories={categories}
-                title={title}
-                authors={authors}
-                rating={rating}
-                issueYear={issueYear}
-                isBooked={Boolean(booking?.order)}
-                img={image?.url}
-                bookedTill={String(booking?.dateOrder)}
-                display={display}
-              />
-            );
-          })}
+          .map((book) => (
+            <Card key={book.id} book={book} display={display} />
+          ))}
       </ul>
     </div>
   );

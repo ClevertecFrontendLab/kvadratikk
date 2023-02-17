@@ -2,10 +2,8 @@
 
 .error {
   position: absolute;
-  top: -90px;
-  left: 15px;
-  right: 15px;
-  width: 100%;
+  top: -40px;
+  width: calc(100% - 30px);
   border: 1.5px solid $negative;
   background: $negative-back;
   padding: 23px 32px;

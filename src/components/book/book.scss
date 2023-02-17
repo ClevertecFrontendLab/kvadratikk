@@ -160,6 +160,7 @@
       max-width: 136px;
       min-height: 198px;
       max-height: 198px;
+      grid-row: auto;
     }
 
     &__title {
@@ -189,7 +190,7 @@
   }
 }
 
-@media (max-width: 320px) {
+@media (max-width: 390px) {
   .book {
     padding-top: 20px;
     padding-bottom: 42px;

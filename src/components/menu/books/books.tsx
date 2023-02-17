@@ -59,7 +59,7 @@ export const Books = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
                   {genre.name}
                 </span>
                 <span className='books__quantity'>
-                  {books.filter((book) => book.categories.includes(genre.name)).length}
+                  {books.filter((book) => book.categories?.includes(genre.name)).length}
                 </span>
               </NavLink>
             </li>
