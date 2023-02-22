@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { setDisplay } from '../../store/slices/display-slice';
 import { RootState } from '../../store/store';
 
 import { Card } from './card/card';
@@ -11,9 +11,22 @@ import { Search } from './search/search';
 import './content.scss';
 
 export const Content = () => {
+  const dispatch = useDispatch();
   const { category } = useParams();
-  const [display, setDisplay] = useState('tile');
   const { books, genres } = useSelector((state: RootState) => state.books);
+  const { display, sort } = useSelector((state: RootState) => state.display);
+
+  const categoryBooks = books
+    .filter((book) => {
+      const curGenre = String(genres.find((genre) => genre.path === category)?.name);
+
+      return category === 'all' ? book : book.categories?.includes(curGenre);
+    })
+    .sort((a, b) => {
+      if (sort === 'desc') return Number(b.rating) - Number(a.rating);
+
+      return Number(a.rating) - Number(b.rating);
+    });
 
   return (
     <div className='content'>
@@ -27,7 +40,7 @@ export const Content = () => {
             type='button'
             className={display === 'tile' ? 'tile icon active' : 'tile icon'}
             onClick={() => {
-              setDisplay('tile');
+              dispatch(setDisplay('tile'));
             }}
           />
           <button
@@ -36,22 +49,21 @@ export const Content = () => {
             type='button'
             className={display === 'list' ? 'list icon active' : 'list icon'}
             onClick={() => {
-              setDisplay('list');
+              dispatch(setDisplay('list'));
             }}
           />
         </div>
       </div>
-      <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
-        {books
-          .filter((book) => {
-            const curGenre = String(genres.find((genre) => genre.path === category)?.name);
 
-            return category === 'all' ? book : book.categories?.includes(curGenre);
-          })
-          .map((book) => (
+      {categoryBooks.length ? (
+        <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
+          {categoryBooks.map((book) => (
             <Card key={book.id} book={book} display={display} />
           ))}
-      </ul>
+        </ul>
+      ) : (
+        <h3 className='not-detected'>В этой категории книг ещё нет</h3>
+      )}
     </div>
   );
 };

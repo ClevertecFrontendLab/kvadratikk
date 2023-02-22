@@ -1,5 +1,11 @@
 @import '../../vars.scss';
 
+.not-detected {
+  color: $gblack40;
+  text-align: center;
+  padding-top: 200px;
+}
+
 .content {
   flex: 1 1 auto;
   max-width: 825px;
