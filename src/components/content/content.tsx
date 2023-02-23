@@ -63,9 +63,16 @@ export const Content = () => {
         ))}
       </ul>
 
-      {(!categoryBooks.length && <h3 className='not-detected'>В этой категории книг ещё нет</h3>) || ''}
+      {(!categoryBooks.length && (
+        <h3 className='not-detected' data-test-id='empty-category'>
+          В этой категории книг ещё нет
+        </h3>
+      )) ||
+        ''}
       {(!foundedBooks.length && categoryBooks.length && (
-        <h3 className='not-detected'>По запросу ничего не найдено</h3>
+        <h3 className='not-detected' data-test-id='search-result-not-found'>
+          По запросу ничего не найдено
+        </h3>
       )) ||
         ''}
     </div>

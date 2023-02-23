@@ -15,7 +15,7 @@ export const Details = () => {
   ];
 
   const list2 = [
-    { title: 'Жанр', descr: categories },
+    { title: 'Жанр', descr: categories?.join(', ') },
     { title: 'Вес', descr: weight },
     { title: 'ISBN', descr: ISBN },
     { title: 'Изготовитель', descr: producer },

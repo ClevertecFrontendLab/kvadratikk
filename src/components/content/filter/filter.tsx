@@ -18,7 +18,7 @@ export const Filter = () => {
   };
 
   return (
-    <button className='filter field' type='button' onClick={changeSort}>
+    <button className='filter field' type='button' onClick={changeSort} data-test-id='sort-rating-button'>
       {sort === 'desc' ? <SortDesc /> : <SortAsc />}
       <span>По рейтингу</span>
     </button>

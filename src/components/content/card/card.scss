@@ -66,9 +66,7 @@
     -webkit-box-orient: vertical;
 
     span {
-      background: $btn-pressed;
-      -webkit-text-fill-color: transparent;
-      -webkit-background-clip: text;
+      color: $btn-hover-rgb;
     }
   }
 

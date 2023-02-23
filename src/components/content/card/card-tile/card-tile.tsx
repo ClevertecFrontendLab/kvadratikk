@@ -17,20 +17,14 @@ export const CardTile = ({ book }: { book: BookPreview }) => {
     const regexp = new RegExp(`${search}`, 'gi');
     const searchWords = title.match(regexp);
 
-    return title.split(regexp).map((word, idx, arr) => {
-      if (idx < arr.length - 1) {
-        const match = searchWords?.shift();
-
-        return (
-          // eslint-disable-next-line react/no-array-index-key
-          <React.Fragment key={idx + word}>
-            {word}
-            <span>{match}</span>
-          </React.Fragment>
-        );
-      }
-
-      return word;
+    return title.split(regexp).map((word, idx) => {
+      return (
+        // eslint-disable-next-line react/no-array-index-key
+        <React.Fragment key={idx + word}>
+          {word}
+          {searchWords?.[idx] ? <span data-test-id='highlight-matches'>{searchWords[idx]}</span> : ''}
+        </React.Fragment>
+      );
     });
   };
 

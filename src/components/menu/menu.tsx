@@ -16,18 +16,9 @@ export const Menu = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
 
   const isExpandedMenu = useSelector((state: RootState) => state.menu.isExpandedMenu);
 
-  const bodyClickFn = useCallback(
-    (e: MouseEvent) => {
-      if (menuRef.current && e.target !== menuRef.current) dispatch(setIsExpandedMenu(false));
-    },
-    [dispatch]
-  );
-
-  if (isBurgerMenu) document.body.addEventListener('click', bodyClickFn);
-
-  useEffect(() => {
-    return document.body.removeEventListener('click', bodyClickFn);
-  }, [bodyClickFn, dispatch]);
+  document.body.addEventListener('click', (e: MouseEvent) => {
+    if (menuRef.current && e.target !== menuRef.current) dispatch(setIsExpandedMenu(false));
+  });
 
   return (
     <nav

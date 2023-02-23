@@ -4,7 +4,7 @@
   padding: 10px 16px 10px 40px;
   width: 100%;
   @include bodyS;
-  caret-color: #f83600;
+  caret-color: $btn-pressed-rgb;
 
   &:focus {
     ~ svg {
