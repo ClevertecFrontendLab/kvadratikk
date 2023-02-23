@@ -59,8 +59,17 @@
   &__title {
     @include subS;
     min-height: 54px;
-    display: flex;
-    align-items: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    span {
+      background: $btn-pressed;
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+    }
   }
 
   &__info {

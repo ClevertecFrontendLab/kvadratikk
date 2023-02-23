@@ -6,9 +6,11 @@ type Sort = 'desc' | 'asc';
 const initialState: {
   display: Display;
   sort: Sort;
+  search: string;
 } = {
   display: 'tile',
   sort: 'desc',
+  search: '',
 };
 
 export const displaySlice = createSlice({
@@ -21,8 +23,11 @@ export const displaySlice = createSlice({
     setSort: (state, { payload }: PayloadAction<Sort>) => {
       state.sort = payload;
     },
+    setSearch: (state, { payload }: PayloadAction<string>) => {
+      state.search = payload;
+    },
   },
 });
 
-export const { setDisplay, setSort } = displaySlice.actions;
+export const { setDisplay, setSort, setSearch } = displaySlice.actions;
 export const displayReducer = displaySlice.reducer;

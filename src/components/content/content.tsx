@@ -14,19 +14,21 @@ export const Content = () => {
   const dispatch = useDispatch();
   const { category } = useParams();
   const { books, genres } = useSelector((state: RootState) => state.books);
-  const { display, sort } = useSelector((state: RootState) => state.display);
+  const { display, sort, search } = useSelector((state: RootState) => state.display);
 
   const categoryBooks = books
     .filter((book) => {
       const curGenre = String(genres.find((genre) => genre.path === category)?.name);
 
-      return category === 'all' ? book : book.categories?.includes(curGenre);
+      return category === 'all' ? true : book.categories?.includes(curGenre);
     })
     .sort((a, b) => {
       if (sort === 'desc') return Number(b.rating) - Number(a.rating);
 
       return Number(a.rating) - Number(b.rating);
     });
+
+  const foundedBooks = categoryBooks.filter((book) => book.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className='content'>
@@ -55,15 +57,17 @@ export const Content = () => {
         </div>
       </div>
 
-      {categoryBooks.length ? (
-        <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
-          {categoryBooks.map((book) => (
-            <Card key={book.id} book={book} display={display} />
-          ))}
-        </ul>
-      ) : (
-        <h3 className='not-detected'>В этой категории книг ещё нет</h3>
-      )}
+      <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
+        {foundedBooks.map((book) => (
+          <Card key={book.id} book={book} />
+        ))}
+      </ul>
+
+      {(!categoryBooks.length && <h3 className='not-detected'>В этой категории книг ещё нет</h3>) || ''}
+      {(!foundedBooks.length && categoryBooks.length && (
+        <h3 className='not-detected'>По запросу ничего не найдено</h3>
+      )) ||
+        ''}
     </div>
   );
 };
