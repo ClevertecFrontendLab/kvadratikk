@@ -4,7 +4,6 @@ import { HashRouter } from 'react-router-dom';
 import { Error } from './components/error/error';
 import { Footer } from './components/footer/footer';
 import { Header } from './components/header/header';
-import { Gradient } from './components/icons/gradient';
 import { Loader } from './components/loader/loader';
 import { Menu } from './components/menu/menu';
 import { RoutesList } from './components/routes/routes';
@@ -15,7 +14,6 @@ export const App = () => {
 
   return (
     <HashRouter>
-      <Gradient />
       <Header />
       <main className='main'>
         {isLoading && <Loader />}

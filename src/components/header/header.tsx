@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import { ReactComponent as Close } from '../../assets/icons/close.svg';
 import menu from '../../assets/icons/menu.svg';
 import avatar from '../../assets/images/avatar.png';
 import logo from '../../assets/images/logo-big.png';
 import { setIsExpandedMenu } from '../../store/slices/menu-slice';
 import { RootState } from '../../store/store';
-import { Close } from '../icons/close';
 
 import './header.scss';
 

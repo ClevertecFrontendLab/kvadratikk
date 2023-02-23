@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 
+import { ReactComponent as Down } from '../../../assets/icons/down.svg';
+import { ReactComponent as Up } from '../../../assets/icons/up.svg';
 import { setIsExpandedMenu, setShouldGenresHide } from '../../../store/slices/menu-slice';
 import { AppDispatch, RootState } from '../../../store/store';
-import { Down } from '../../icons/down';
-import { Up } from '../../icons/up';
 
 import './books.scss';
 
@@ -55,10 +55,18 @@ export const Books = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
                   dispatch(setIsExpandedMenu(false));
                 }}
               >
-                <span className={`books__genre ${pathname === `/books/${genre.path}` ? 'active' : ''}`}>
+                <span
+                  data-test-id={isBurgerMenu ? `burger-${genre.path}` : `navigation-${genre.path}`}
+                  className={`books__genre ${pathname === `/books/${genre.path}` ? 'active' : ''}`}
+                >
                   {genre.name}
                 </span>
-                <span className='books__quantity'>
+                <span
+                  className='books__quantity'
+                  data-test-id={
+                    isBurgerMenu ? `burger-book-count-for-${genre.path}` : `navigation-book-count-for-${genre.path}`
+                  }
+                >
                   {books.filter((book) => book.categories?.includes(genre.name)).length}
                 </span>
               </NavLink>

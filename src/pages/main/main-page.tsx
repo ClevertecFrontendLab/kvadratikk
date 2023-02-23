@@ -11,14 +11,17 @@ import './main-page.scss';
 
 export const MainPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { loading } = useSelector((state: RootState) => state.books);
+  const { loading, books } = useSelector((state: RootState) => state.books);
 
   useEffect(() => {
     if (loading === 'idle') {
       dispatch(getGenres());
       dispatch(getBooks());
     }
-    if (loading === 'pending') dispatch(setIsLoading(true));
+    if (loading === 'pending') {
+      dispatch(setIsLoading(true));
+      if (!books.length) dispatch(getBooks());
+    }
     if (loading === 'failed') {
       dispatch(setIsError(true));
       dispatch(setIsLoading(false));
@@ -27,7 +30,7 @@ export const MainPage = () => {
       dispatch(setIsLoading(false));
       dispatch(setIsError(false));
     }
-  }, [dispatch, loading]);
+  }, [books.length, dispatch, loading]);
 
   return (
     <section className='main-page'>

@@ -13,12 +13,13 @@ import { CardTile } from './card-tile/card-tile';
 
 import './card.scss';
 
-export const Card = ({ display, book }: { display: string; book: BookPreview }) => {
+export const Card = ({ book }: { book: BookPreview }) => {
   const { category } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
   const { loading } = useSelector((state: RootState) => state.book);
+  const { display } = useSelector((state: RootState) => state.display);
 
   const { id, image } = book;
 

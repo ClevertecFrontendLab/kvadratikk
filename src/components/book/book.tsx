@@ -64,7 +64,9 @@ export const Book = () => {
         </div>
       )}
       <div className='book__about'>
-        <h3 className='book__title'>{title}</h3>
+        <h3 className='book__title' data-test-id='book-title'>
+          {title}
+        </h3>
         <h5 className='book__info'>{`${authors}, ${issueYear}`}</h5>
         {booking?.order ? (
           <button type='button' disabled={true} className='btn book__book'>

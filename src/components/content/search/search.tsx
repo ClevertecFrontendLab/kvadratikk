@@ -1,42 +1,56 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { Close } from '../../icons/close';
+import { ReactComponent as Close } from '../../../assets/icons/close.svg';
+import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
+import { setSearch } from '../../../store/slices/display-slice';
 
 import './search.scss';
 
 export const Search = () => {
+  const dispatch = useDispatch();
   const [showInput, setShowInput] = useState(false);
+
+  const changeSearch = (e: ChangeEvent) => {
+    const { value } = e.target as HTMLInputElement;
+
+    dispatch(setSearch(value));
+  };
 
   return (
     <React.Fragment>
-      <input className='search field' type='text' placeholder='Поиск книги или автора…' />
-      <form className={`search__form-mobile ${showInput ? 'visible' : ''}`} action=''>
+      <div className={`search__wrapper ${showInput ? 'visible' : ''}`}>
         <input
           data-test-id='input-search'
-          className='field search-mobile'
-          type='text'
+          className='search field'
+          type='search'
           placeholder='Поиск книги или автора…'
+          onChange={changeSearch}
         />
+        <SearchIcon />
         <button
           data-test-id='button-search-close'
           type='button'
           aria-label='button'
+          className='search__close'
           onClick={() => {
             setShowInput(false);
           }}
         >
-          <Close />
+          {showInput && <Close />}
         </button>
-      </form>
+      </div>
       <button
         data-test-id='button-search-open'
         type='button'
-        className='search-btn icon'
+        className='search__open icon'
         aria-label='button'
         onClick={() => {
           setShowInput(true);
         }}
-      />
+      >
+        <SearchIcon />
+      </button>
     </React.Fragment>
   );
 };

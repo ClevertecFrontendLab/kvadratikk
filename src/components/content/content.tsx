@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import { setDisplay } from '../../store/slices/display-slice';
 import { RootState } from '../../store/store';
 
 import { Card } from './card/card';
@@ -11,9 +11,24 @@ import { Search } from './search/search';
 import './content.scss';
 
 export const Content = () => {
+  const dispatch = useDispatch();
   const { category } = useParams();
-  const [display, setDisplay] = useState('tile');
   const { books, genres } = useSelector((state: RootState) => state.books);
+  const { display, sort, search } = useSelector((state: RootState) => state.display);
+
+  const categoryBooks = books
+    .filter((book) => {
+      const curGenre = String(genres.find((genre) => genre.path === category)?.name);
+
+      return category === 'all' ? true : book.categories?.includes(curGenre);
+    })
+    .sort((a, b) => {
+      if (sort === 'desc') return Number(b.rating) - Number(a.rating);
+
+      return Number(a.rating) - Number(b.rating);
+    });
+
+  const foundedBooks = categoryBooks.filter((book) => book.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className='content'>
@@ -27,7 +42,7 @@ export const Content = () => {
             type='button'
             className={display === 'tile' ? 'tile icon active' : 'tile icon'}
             onClick={() => {
-              setDisplay('tile');
+              dispatch(setDisplay('tile'));
             }}
           />
           <button
@@ -36,22 +51,30 @@ export const Content = () => {
             type='button'
             className={display === 'list' ? 'list icon active' : 'list icon'}
             onClick={() => {
-              setDisplay('list');
+              dispatch(setDisplay('list'));
             }}
           />
         </div>
       </div>
-      <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
-        {books
-          .filter((book) => {
-            const curGenre = String(genres.find((genre) => genre.path === category)?.name);
 
-            return category === 'all' ? book : book.categories?.includes(curGenre);
-          })
-          .map((book) => (
-            <Card key={book.id} book={book} display={display} />
-          ))}
+      <ul className={display === 'tile' ? 'content__list' : 'content__list content__list-list'}>
+        {foundedBooks.map((book) => (
+          <Card key={book.id} book={book} />
+        ))}
       </ul>
+
+      {(!categoryBooks.length && (
+        <h3 className='not-detected' data-test-id='empty-category'>
+          В этой категории книг ещё нет
+        </h3>
+      )) ||
+        ''}
+      {(!foundedBooks.length && categoryBooks.length && (
+        <h3 className='not-detected' data-test-id='search-result-not-found'>
+          По запросу ничего не найдено
+        </h3>
+      )) ||
+        ''}
     </div>
   );
 };
