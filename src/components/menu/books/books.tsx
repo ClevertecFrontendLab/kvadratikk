@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 
+import { ReactComponent as Down } from '../../../assets/icons/down.svg';
+import { ReactComponent as Up } from '../../../assets/icons/up.svg';
 import { setIsExpandedMenu, setShouldGenresHide } from '../../../store/slices/menu-slice';
 import { AppDispatch, RootState } from '../../../store/store';
-import { Down } from '../../icons/down';
-import { Up } from '../../icons/up';
 
 import './books.scss';
 

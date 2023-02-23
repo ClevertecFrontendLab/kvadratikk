@@ -1,4 +1,4 @@
-import { LoaderCircle } from '../icons/loader-circle';
+import { ReactComponent as LoaderCircle } from '../../assets/icons/loader-circle.svg';
 
 import './loader.scss';
 

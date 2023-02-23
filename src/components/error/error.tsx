@@ -1,5 +1,5 @@
 import caution from '../../assets/icons/caution.svg';
-import { Close } from '../icons/close';
+import { ReactComponent as Close } from '../../assets/icons/close.svg';
 
 import './error.scss';
 

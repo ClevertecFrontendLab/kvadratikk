@@ -8,7 +8,7 @@
 
   &:focus {
     ~ svg {
-      fill: url(#btn-pressed);
+      fill: $btn-pressed-rgb;
     }
   }
 
@@ -74,7 +74,7 @@
       transform: translate(0, -50%);
 
       svg {
-        fill: url(#btn-pressed);
+        fill: $btn-pressed-rgb;
         width: 100%;
         height: 100%;
       }

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ReactComponent as SortAsc } from '../../../assets/icons/sort-asc.svg';
+import { ReactComponent as SortDesc } from '../../../assets/icons/sort-desc.svg';
 import { setSort } from '../../../store/slices/display-slice';
 import { RootState } from '../../../store/store';
-import { SortAsc } from '../../icons/sort-asc';
-import { SortDesc } from '../../icons/sort-desc';
 
 import './filter.scss';
 

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ReactComponent as Close } from '../../../assets/icons/close.svg';
+import { ReactComponent as SearchIcon } from '../../../assets/icons/search.svg';
 import { setSearch } from '../../../store/slices/display-slice';
-import { Close } from '../../icons/close';
-import { SearchIcon } from '../../icons/search-icon';
 
 import './search.scss';
 
