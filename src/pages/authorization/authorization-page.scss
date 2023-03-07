@@ -11,6 +11,10 @@
   background: $btn-hover;
   height: 100vh;
 
+  .container-auth {
+    position: static;
+  }
+
   h3 {
     color: $white;
     text-align: center;

@@ -1,6 +1,7 @@
 import { UseFormRegister } from 'react-hook-form';
 
 import { Inputs } from '../../../interfaces/inputs';
+import { emailErrors } from '../data';
 
 export const Email = ({
   register,
@@ -37,7 +38,7 @@ export const Email = ({
           },
         })}
       />
-      <div className='sign-in__tooltip'>{showError()}</div>
+      <div className='sign-in__tooltip'>{isBlurError ? showError() : emailErrors.default}</div>
     </label>
   );
 };

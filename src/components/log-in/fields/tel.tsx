@@ -2,6 +2,7 @@ import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import MaskedInput from 'react-text-mask';
 
 import { Inputs } from '../../../interfaces/inputs';
+import { telErrors } from '../data';
 
 export const Tel = ({
   register,
@@ -39,7 +40,7 @@ export const Tel = ({
           },
         })}
       />
-      <div className='sign-in__tooltip'>{showError()}</div>
+      <div className='sign-in__tooltip'>{isBlurError ? showError() : telErrors.default}</div>
     </label>
   );
 };

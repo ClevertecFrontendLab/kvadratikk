@@ -10,8 +10,8 @@ export const LogIn = () => {
           <h4>Вход в личный кабинет</h4>
         </div>
         <div className='log-in__fields'>
-          <input type='text' placeholder='Логин' />
-          <input type='password' placeholder='Пароль' />
+          <input type='text' placeholder='Логин' autoComplete='username' />
+          <input type='password' placeholder='Пароль' autoComplete='current-password' />
         </div>
         <NavLink to='/registration' className='log-in__forget'>
           <span>Забыли логин или пароль?</span>

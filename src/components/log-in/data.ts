@@ -49,4 +49,5 @@ export const emailErrors = {
   checkMask: createTooltip(emailTooltip, [emailTooltip]),
   required: createTooltip(requiredTooltip, [requiredTooltip]),
   blur: createTooltip(emailTooltip, [emailTooltip]),
+  default: '',
 };

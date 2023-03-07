@@ -5,7 +5,7 @@ import '../authorization/authorization-page.scss';
 export const Registration = () => {
   return (
     <section className='registration-page'>
-      <div className='container'>
+      <div className='container container-auth'>
         <h3>Cleverland</h3>
         <SignIn />
       </div>

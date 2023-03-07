@@ -28,6 +28,7 @@ export const Password = ({
       <input
         className={isBlurError ? 'border-error' : ''}
         type={isPasswordHidden ? 'password' : 'text'}
+        autoComplete='current-password'
         placeholder='Пароль'
         {...register('password', {
           required: true,

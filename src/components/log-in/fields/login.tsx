@@ -20,6 +20,7 @@ export const Login = ({
       <input
         className={isBlurError ? 'border-error' : ''}
         type='text'
+        autoComplete='username'
         placeholder='Придумайте логин для входа'
         {...register('login', {
           required: true,
