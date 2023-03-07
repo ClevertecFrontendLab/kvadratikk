@@ -1,0 +1,19 @@
+@import '../../vars.scss';
+
+.header,
+.footer {
+  display: none;
+}
+
+.authorization-page,
+.registration-page {
+  padding-top: 180px;
+  background: $btn-hover;
+  height: 100vh;
+
+  h3 {
+    color: $white;
+    text-align: center;
+    margin-bottom: 46px;
+  }
+}
