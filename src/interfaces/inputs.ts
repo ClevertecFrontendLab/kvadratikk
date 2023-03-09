@@ -1,3 +1,8 @@
+export interface AuthInputs {
+  login: string;
+  password: string;
+}
+
 export interface Inputs {
   login: string;
   password: string;

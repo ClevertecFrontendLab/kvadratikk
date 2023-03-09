@@ -86,7 +86,7 @@ export const Step1 = ({
       </button>
       <div className='sign-in__transition'>
         <span>Есть учётная запись?</span>
-        <NavLink to='/authorization'>войти</NavLink>
+        <NavLink to='/auth'>войти</NavLink>
       </div>
     </div>
   );

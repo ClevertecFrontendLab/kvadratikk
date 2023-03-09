@@ -129,8 +129,18 @@
     }
   }
 
+  &__question {
+    color: $dark;
+  }
+
+  &__wrong {
+    @include infoL;
+    padding: 0 12px;
+    color: $negative;
+  }
+
   &__forget {
-    display: block;
+    display: inline-block;
     @include infoL;
     color: $gblack40;
     padding: 0 12px;

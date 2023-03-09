@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { authorizationReducer } from './slices/authorization-slice';
 import { bookReducer } from './slices/book-slice';
 import { booksReducer } from './slices/books-slice';
 import { displayReducer } from './slices/display-slice';
@@ -15,6 +16,7 @@ export const store = configureStore({
     display: displayReducer,
     loading: loadingReducer,
     registration: registrationReducer,
+    authorization: authorizationReducer,
   },
 });
 

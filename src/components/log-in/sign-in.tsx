@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,9 +22,9 @@ export const SignIn = () => {
   const { loading, code } = useSelector((state: RootState) => state.registration);
 
   const [step, setStep] = useState(1);
-  const [showSuccess, setShowSuccess] = useState(code === 200);
-  const [showExist, setShowExist] = useState(code === 400);
-  const [showFail, setShowFail] = useState(Boolean(code && code !== 200 && code !== 400));
+  const [isSuccess, setIsSuccess] = useState(code === 200);
+  const [isExist, setIsExist] = useState(code === 400);
+  const [isFail, setIsFail] = useState(Boolean(code && code !== 200 && code !== 400));
 
   const stepWidth = 528;
   const stepMargin = 200;
@@ -51,12 +51,12 @@ export const SignIn = () => {
       setStep(1);
 
       if (code === 200) {
-        setShowSuccess(true);
+        setIsSuccess(true);
       } else if (code === 400) {
-        setShowExist(true);
+        setIsExist(true);
         reset();
       } else {
-        setShowFail(true);
+        setIsFail(true);
       }
     }
 
@@ -68,10 +68,10 @@ export const SignIn = () => {
   };
 
   return (
-    <React.Fragment>
-      {showSuccess && <RegSuccess setState={setShowSuccess} />}
-      {showExist && <RegExist setState={setShowExist} />}
-      {showFail && <RegFail setState={setShowFail} handleSubmit={() => onSubmit(getValues())} />}
+    <Fragment>
+      {isSuccess && <RegSuccess setState={setIsSuccess} />}
+      {isExist && <RegExist setState={setIsExist} />}
+      {isFail && <RegFail setState={setIsFail} handleSubmit={() => onSubmit(getValues())} />}
 
       <form className='sign-in__form' onSubmit={handleSubmit(onSubmit)}>
         <div className='form-container' style={{ right: `${(stepWidth + stepMargin) * (step - 1)}px` }}>
@@ -94,6 +94,6 @@ export const SignIn = () => {
           <Step3 stepStyle={stepStyle} register={register} errors={errors} watch={watch} setValue={setValue} />
         </div>
       </form>
-    </React.Fragment>
+    </Fragment>
   );
 };

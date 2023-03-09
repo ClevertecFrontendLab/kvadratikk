@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 export const CardList = ({
   cardElements,
@@ -13,13 +13,13 @@ export const CardList = ({
   const { tile, info, rating, order } = cardElements;
 
   return (
-    <React.Fragment>
+    <Fragment>
       {tile}
       {info}
       <div className='card__flex'>
         {rating}
         {order}
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };

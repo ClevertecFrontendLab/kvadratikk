@@ -1,7 +1,8 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 export const createTooltip = (str: string, splitWords: string[]) => {
   let copyStr = str;
+  let key = 0;
   const seperator = '--';
 
   for (let i = 0; i < splitWords.length; i++) {
@@ -9,12 +10,13 @@ export const createTooltip = (str: string, splitWords: string[]) => {
   }
 
   return copyStr.split(seperator).map((word, idx) => {
+    key += 1;
+
     return (
-      // eslint-disable-next-line react/no-array-index-key
-      <React.Fragment key={idx}>
+      <Fragment key={key}>
         {word}
         <span>{splitWords[idx]}</span>
-      </React.Fragment>
+      </Fragment>
     );
   });
 };

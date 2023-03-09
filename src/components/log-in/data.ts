@@ -11,6 +11,10 @@ const createLoginTooltip = (splitWord: string | string[]) =>
 const createPasswordTooltip = (splitWord: string | string[]) =>
   createTooltip(passwordTooltip, Array.isArray(splitWord) ? splitWord : [splitWord]);
 
+export const requiredErrors = {
+  required: createTooltip(requiredTooltip, [requiredTooltip]),
+};
+
 export const loginErrors = {
   checkOnlyNumbers: createLoginTooltip('латинский алфавит'),
   checkOnlyLetters: createLoginTooltip('цифры'),

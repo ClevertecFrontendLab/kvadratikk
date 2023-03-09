@@ -15,7 +15,7 @@ export const RegSuccess = ({ setState }: { setState: React.Dispatch<React.SetSta
         Регистрация прошла успешно. Зайдите в личный кабинет, используя свои логин и пароль
       </div>
 
-      <NavLink onClick={handleClick} to='/authorization'>
+      <NavLink onClick={handleClick} to='/auth'>
         <button type='button' className='btn log-in__submit'>
           Вход
         </button>

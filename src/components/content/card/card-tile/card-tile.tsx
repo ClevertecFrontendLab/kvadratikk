@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 
 export const CardTile = ({
   cardElements,
@@ -13,11 +13,11 @@ export const CardTile = ({
   const { tile, info, rating, order } = cardElements;
 
   return (
-    <React.Fragment>
+    <Fragment>
       {rating}
       {tile}
       {info}
       {order}
-    </React.Fragment>
+    </Fragment>
   );
 };
