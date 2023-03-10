@@ -6,6 +6,7 @@ import { booksReducer } from './slices/books-slice';
 import { displayReducer } from './slices/display-slice';
 import { loadingReducer } from './slices/loading-slice';
 import { menuReducer } from './slices/menu-slice';
+import { recoveryReducer } from './slices/recovery-slice';
 import { registrationReducer } from './slices/registration-slice';
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     loading: loadingReducer,
     registration: registrationReducer,
     authorization: authorizationReducer,
+    recovery: recoveryReducer,
   },
 });
 

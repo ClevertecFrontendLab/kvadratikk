@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { createAuthUser } from '../thunks';
 
@@ -20,11 +20,7 @@ const initialState: {
 export const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
-  reducers: {
-    setAuthCode: (state, { payload }: PayloadAction<Code>) => {
-      state.code = payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(createAuthUser.pending, (state) => {
       state.loading = 'pending';
@@ -42,5 +38,4 @@ export const authorizationSlice = createSlice({
   },
 });
 
-export const { setAuthCode } = authorizationSlice.actions;
 export const authorizationReducer = authorizationSlice.reducer;

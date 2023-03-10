@@ -4,7 +4,7 @@ import axios, { AxiosError } from 'axios';
 import { BookItem } from '../interfaces/book-item';
 import { BookPreview } from '../interfaces/book-preview';
 import { GenreItem } from '../interfaces/genre-item';
-import { AuthInputs, Inputs } from '../interfaces/inputs';
+import { AuthInputs, EmailInputs, RegInputs } from '../interfaces/inputs';
 
 import { RootState, store } from './store';
 
@@ -62,7 +62,7 @@ export const getBook = createAsyncThunk<BookItem, string, { state: RootState }>(
   }
 );
 
-export const createUser = createAsyncThunk('users/createUser', async (data: Inputs, { rejectWithValue }) => {
+export const createUser = createAsyncThunk('users/createUser', async (data: RegInputs, { rejectWithValue }) => {
   const { login: username, password, name: firstName, surname: lastName, tel: phone, email } = data;
 
   try {
@@ -102,6 +102,39 @@ export const createAuthUser = createAsyncThunk(
         jwt,
         user,
       };
+    } catch (e) {
+      const error = e as AxiosError;
+      const status = error.response?.status;
+
+      return rejectWithValue(status);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  'users/forgotPassword',
+  async (data: EmailInputs, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${USER_URL}/forgot-password`, data);
+
+      return response.data;
+    } catch (e) {
+      const error = e as AxiosError;
+      const { message } = error;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  'users/resetPassword',
+  async (data: { password: string; repeat: string; code: string }, { rejectWithValue }) => {
+    try {
+      const { password, repeat: passwordConfirmation, code } = data;
+      const response = await axios.post(`${USER_URL}/reset-password`, { password, passwordConfirmation, code });
+
+      return response.data;
     } catch (e) {
       const error = e as AxiosError;
       const status = error.response?.status;
