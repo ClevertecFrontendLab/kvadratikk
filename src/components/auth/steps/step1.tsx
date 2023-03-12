@@ -2,21 +2,13 @@ import { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
+import { ReactComponent as ArrowR } from '../../../assets/icons/arrow-r.svg';
 import { RegInputs } from '../../../interfaces/inputs';
 import { loginErrors, passwordErrors } from '../data';
 import { Login } from '../fields/login';
 import { Password } from '../fields/password';
 
-export const Step1 = ({
-  stepStyle,
-  form,
-}: {
-  stepStyle: {
-    minWidth: number;
-    marginRight: number;
-  };
-  form: UseFormReturn<RegInputs>;
-}) => {
+export const Step1 = ({ form, step }: { form: UseFormReturn<RegInputs>; step: number }) => {
   const [isLoginBlur, setIsLoginBlur] = useState(false);
   const [isPasswordBlur, setIsPasswordBlur] = useState(false);
 
@@ -95,7 +87,7 @@ export const Step1 = ({
   };
 
   return (
-    <div className='auth__step' style={stepStyle}>
+    <div className={`auth__step ${step > 1 ? 'hidden' : ''}`}>
       <div className='auth__top'>
         <h4>Регистрация</h4>
         <span>1 шаг из 3</span>
@@ -123,7 +115,9 @@ export const Step1 = ({
       </button>
       <div className='auth__transition'>
         <span>Есть учётная запись?</span>
-        <NavLink to='/auth'>войти</NavLink>
+        <NavLink to='/auth'>
+          войти <ArrowR />
+        </NavLink>
       </div>
     </div>
   );

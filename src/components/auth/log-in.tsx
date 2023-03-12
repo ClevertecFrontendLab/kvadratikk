@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 
+import { ReactComponent as ArrowR } from '../../assets/icons/arrow-r.svg';
 import { AuthInputs } from '../../interfaces/inputs';
 import { setIsLoading } from '../../store/slices/loading-slice';
 import { AppDispatch, RootState } from '../../store/store';
@@ -114,7 +115,9 @@ export const LogIn = () => {
           </button>
           <div className='auth__transition'>
             <span>Нет учётной записи?</span>
-            <NavLink to='/registration'>Регистрация</NavLink>
+            <NavLink to='/registration'>
+              Регистрация <ArrowR />
+            </NavLink>
           </div>
         </div>
       </form>

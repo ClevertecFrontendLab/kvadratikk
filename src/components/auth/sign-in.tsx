@@ -30,10 +30,6 @@ export const SignIn = () => {
 
   const otherCode = code && code !== 200 && code !== 400;
 
-  const stepWidth = 528;
-  const stepMargin = 200;
-  const stepStyle = { minWidth: stepWidth, marginRight: stepMargin };
-
   useEffect(() => {
     if (loading === 'pending') dispatch(setIsLoading(true));
     if (loading === 'failed') dispatch(setIsLoading(false));
@@ -44,7 +40,7 @@ export const SignIn = () => {
   }, [code, dispatch, loading, reset]);
 
   const onSubmit = (data: RegInputs) => {
-    if (Object.keys(data).length < 6) {
+    if (Object.keys(data).length < 6 && !code) {
       setStep(step + 1);
 
       return;
@@ -60,10 +56,10 @@ export const SignIn = () => {
       {otherCode && <RegFail handleSubmit={() => onSubmit(getValues())} />}
 
       <form className='auth__form' data-test-id='register-form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='form-container' style={{ right: `${(stepWidth + stepMargin) * (step - 1)}px` }}>
-          <Step1 stepStyle={stepStyle} form={form} />
-          {step >= 2 && <Step2 stepStyle={stepStyle} form={form} />}
-          {step >= 3 && <Step3 stepStyle={stepStyle} form={form} />}
+        <div className='form-container'>
+          <Step1 form={form} step={step} />
+          {step >= 2 && <Step2 form={form} step={step} />}
+          {step >= 3 && <Step3 form={form} />}
         </div>
       </form>
     </Fragment>

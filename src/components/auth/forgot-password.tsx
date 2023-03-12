@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as ArrowL } from '../../assets/icons/arrow-l.svg';
+import { ReactComponent as ArrowR } from '../../assets/icons/arrow-r.svg';
 import { EmailInputs } from '../../interfaces/inputs';
 import { setIsLoading } from '../../store/slices/loading-slice';
 import { AppDispatch, RootState } from '../../store/store';
@@ -91,7 +92,9 @@ export const ForgotPassword = () => {
           </button>
           <div className='auth__transition'>
             <span>Нет учётной записи?</span>
-            <NavLink to='/registration'>Регистрация</NavLink>
+            <NavLink to='/registration'>
+              Регистрация <ArrowR />
+            </NavLink>
           </div>
         </div>
       </form>

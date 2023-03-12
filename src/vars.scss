@@ -88,6 +88,13 @@ $gblack5: #f9f9fa;
   font-weight: 600;
 }
 
+@mixin h3-m {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0.1px;
+}
+
 @mixin h4 {
   font-weight: 700;
   font-size: 24px;
