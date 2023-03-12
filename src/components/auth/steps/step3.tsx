@@ -1,65 +1,45 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { UseFormReturn } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
-import { RegInputs, Step3Inputs } from '../../../interfaces/inputs';
-import { AppDispatch, RootState } from '../../../store/store';
-import { createUser } from '../../../store/thunks';
+import { RegInputs } from '../../../interfaces/inputs';
 import { emailErrors, telErrors } from '../data';
 import { Email } from '../fields/email';
 import { Tel } from '../fields/tel';
 
 export const Step3 = ({
   stepStyle,
-  formValues,
-  setFormValues,
+  form,
 }: {
   stepStyle: {
     minWidth: number;
     marginRight: number;
   };
-  formValues: RegInputs;
-  setFormValues: React.Dispatch<React.SetStateAction<RegInputs>>;
+  form: UseFormReturn<RegInputs>;
 }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { code } = useSelector((state: RootState) => state.registration);
-
-  const form = useForm<Step3Inputs>({
-    mode: 'onBlur',
-  });
-
   const {
     register,
-    reset,
-    handleSubmit,
     setValue,
     formState: { errors },
   } = form;
 
-  useEffect(() => {
-    if (code === 400) reset();
-  }, [code, reset]);
-
   const telValidation = {
-    ...register('tel', {
+    ...register('phone', {
       required: true,
       validate: {
         checkMask: (value) => !/[x]/gi.test(value),
       },
       onChange: (e) => {
-        setValue('tel', e.target.value);
+        setValue('phone', e.target.value);
       },
     }),
   };
 
   const showTelTooltip = () => {
-    const tooltip = 'В формате +375 (xx) xxx-xx-xx';
-    const error = telErrors[errors.tel?.type as keyof typeof telErrors];
+    const error = telErrors[errors.phone?.type as keyof typeof telErrors];
 
     if (error) return error;
 
-    return tooltip;
+    return telErrors.tooltip;
   };
 
   const emailValidation = {
@@ -75,36 +55,30 @@ export const Step3 = ({
   };
 
   const showEmailTooltip = () => {
-    const tooltip = '';
     const error = emailErrors[errors.email?.type as keyof typeof emailErrors];
 
     if (error) return error;
 
-    return tooltip;
-  };
-
-  const onSubmit = (data: Step3Inputs) => {
-    setFormValues({ ...formValues, ...data });
-    dispatch(createUser({ ...formValues, ...data }));
+    return emailErrors.tooltip;
   };
 
   return (
-    <form className='sign-in__step' style={stepStyle} onSubmit={handleSubmit(onSubmit)}>
-      <div className='sign-in__top'>
+    <div className='auth__step' style={stepStyle}>
+      <div className='auth__top'>
         <h4>Регистрация</h4>
         <span>3 шаг из 3</span>
       </div>
-      <div className='sign-in__fields'>
-        <Tel validation={telValidation} showTooltip={showTelTooltip} showBorder={Boolean(errors.tel)} />
-        <Email validation={emailValidation} showTooltip={showEmailTooltip} showBorder={Boolean(errors.email)} />
+      <div className='auth__fields'>
+        <Tel validation={telValidation} showTooltip={showTelTooltip} showBorder={!!errors.phone} />
+        <Email validation={emailValidation} showTooltip={showEmailTooltip} showBorder={!!errors.email} />
       </div>
-      <button type='submit' className='btn sign-in__submit'>
+      <button type='submit' className='btn auth__submit' disabled={!!Object.keys(errors).length}>
         зарегистрироваться
       </button>
-      <div className='sign-in__transition'>
+      <div className='auth__transition'>
         <span>Есть учётная запись?</span>
         <NavLink to='/auth'>войти</NavLink>
       </div>
-    </form>
+    </div>
   );
 };

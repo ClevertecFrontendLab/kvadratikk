@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { createUser } from '../thunks';
 
@@ -17,8 +17,9 @@ export const registrationSlice = createSlice({
   name: 'registration',
   initialState,
   reducers: {
-    setCode: (state, { payload }: PayloadAction<Code>) => {
-      state.code = payload;
+    resetRegistration: (state) => {
+      state.code = null;
+      state.loading = 'idle';
     },
   },
   extraReducers: (builder) => {
@@ -36,5 +37,5 @@ export const registrationSlice = createSlice({
   },
 });
 
-export const { setCode } = registrationSlice.actions;
+export const { resetRegistration } = registrationSlice.actions;
 export const registrationReducer = registrationSlice.reducer;

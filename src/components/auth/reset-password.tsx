@@ -3,17 +3,16 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
-import { createTooltip } from '../../helpers/create-tooltip';
 import { PasswordsInputs } from '../../interfaces/inputs';
 import { setIsLoading } from '../../store/slices/loading-slice';
-import { setRecoveryLoading } from '../../store/slices/recovery-slice';
+import { resetRecovery } from '../../store/slices/recovery-slice';
 import { AppDispatch, RootState } from '../../store/store';
 import { resetPassword } from '../../store/thunks';
 
 import { Password } from './fields/password';
 import { ResetFail } from './modals/reset-fail';
 import { ResetSuccess } from './modals/reset-success';
-import { createPasswordTooltip, passwordErrors } from './data';
+import { passwordErrors } from './data';
 
 import './auth.scss';
 
@@ -40,7 +39,7 @@ export const ResetPassword = () => {
     mode: 'all',
   });
 
-  const passwordsMatch = () => watch('password') === watch('repeat');
+  const passwordsMatch = () => watch('password') === watch('passwordConfirmation');
 
   const passwordValidation = {
     ...register('password', {
@@ -63,17 +62,17 @@ export const ResetPassword = () => {
   const isPasswordBlurError = isPasswordBlur && errors.password && errors.password?.type !== 'required';
 
   const showPasswordTooltip = () => {
-    const tooltip = 'Пароль не менее 8 символов, с заглавной буквой и цифрой';
     const error = passwordErrors[errors.password?.type as keyof typeof passwordErrors];
 
-    if (isPasswordBlurError) return createPasswordTooltip(tooltip);
+    if (isPasswordBlurError) return passwordErrors.blur;
+    if (errors.password?.type === 'required' && !isPasswordBlur) return passwordErrors.tooltip;
     if (error) return error;
 
-    return tooltip;
+    return passwordErrors.tooltip;
   };
 
   const repeatValidation = {
-    ...register('repeat', {
+    ...register('passwordConfirmation', {
       required: true,
       onChange: () => {
         setIsNotMatch(false);
@@ -85,13 +84,12 @@ export const ResetPassword = () => {
   };
 
   const showRepeatTooltip = () => {
-    const tooltip = '';
-    const error = passwordErrors[errors.repeat?.type as keyof typeof passwordErrors];
+    const error = passwordErrors[errors.passwordConfirmation?.type as keyof typeof passwordErrors];
 
-    if (isNotMatch) return createTooltip('Пароли не совпадают', ['Пароли не совпадают']);
     if (error) return error;
+    if (isNotMatch) return passwordErrors.match;
 
-    return tooltip;
+    return passwordErrors.resetToltip;
   };
 
   const onSubmit: SubmitHandler<PasswordsInputs> = (data) => {
@@ -108,12 +106,12 @@ export const ResetPassword = () => {
       {loading === 'failed' && (
         <ResetFail
           handleSubmit={() => {
-            dispatch(setRecoveryLoading('idle'));
+            dispatch(resetRecovery());
           }}
         />
       )}
 
-      <form className='auth__form' onSubmit={handleSubmit(onSubmit)}>
+      <form className='auth__form' data-test-id='reset-password-form' onSubmit={handleSubmit(onSubmit)}>
         <div className='auth__step'>
           <div className='auth__top'>
             <h4>Восстановление пароля</h4>
@@ -123,15 +121,17 @@ export const ResetPassword = () => {
               placeholder='Новый пароль'
               validation={passwordValidation}
               showTooltip={showPasswordTooltip}
-              showBorder={Boolean(isPasswordBlurError || errors.password?.type === 'required')}
-              showCheck={Boolean(!errors.password && watch('password'))}
+              showBorder={!!(isPasswordBlurError || (errors.password?.type === 'required' && isPasswordBlur))}
+              showCheck={!!(!errors.password && watch('password'))}
+              isEmpty={!watch('password')}
             />
             <Password
               placeholder='Повторите пароль'
               validation={repeatValidation}
               showTooltip={showRepeatTooltip}
-              showBorder={Boolean(isNotMatch || errors.repeat)}
+              showBorder={!!(isNotMatch || errors.passwordConfirmation)}
               showCheck={false}
+              isEmpty={!watch('passwordConfirmation')}
             />
           </div>
 

@@ -1,6 +1,6 @@
 export const ResetFail = ({ handleSubmit }: { handleSubmit: () => void }) => {
   return (
-    <div className='auth__modal'>
+    <div className='auth__modal' data-test-id='status-block'>
       <div className='auth__top'>
         <h4>Данные не сохранились</h4>
       </div>

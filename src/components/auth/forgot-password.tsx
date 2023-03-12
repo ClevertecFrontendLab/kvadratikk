@@ -1,10 +1,9 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import { ReactComponent as ArrowL } from '../../assets/icons/arrow-l.svg';
-import { createTooltip } from '../../helpers/create-tooltip';
 import { EmailInputs } from '../../interfaces/inputs';
 import { setIsLoading } from '../../store/slices/loading-slice';
 import { AppDispatch, RootState } from '../../store/store';
@@ -19,6 +18,8 @@ import './auth.scss';
 export const ForgotPassword = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, errorMessage } = useSelector((state: RootState) => state.recovery);
+
+  const [, setIsEmailBlur] = useState(false);
 
   useEffect(() => {
     if (loading === 'pending') dispatch(setIsLoading(true));
@@ -43,17 +44,22 @@ export const ForgotPassword = () => {
             value
           ),
       },
+      onChange: () => {
+        setIsEmailBlur(false);
+      },
+      onBlur: () => {
+        setIsEmailBlur(true);
+      },
     }),
   };
 
   const showEmailTooltip = () => {
-    const tooltip = 'На этот email будет отправлено письмо с инструкциями по восстановлению пароля';
     const error = emailErrors[errors.email?.type as keyof typeof emailErrors];
 
-    if (errorMessage) return createTooltip(errorMessage, [errorMessage]);
+    if (errorMessage) return emailErrors.errorMessage;
     if (error) return error;
 
-    return tooltip;
+    return emailErrors.forgotTooltip;
   };
 
   const onSubmit: SubmitHandler<EmailInputs> = (data) => {
@@ -63,7 +69,7 @@ export const ForgotPassword = () => {
   return (
     <Fragment>
       {loading === 'succeeded' && <ForgotSuccess />}
-      <form className='auth__form' onSubmit={handleSubmit(onSubmit)}>
+      <form className='auth__form' data-test-id='send-email-form' onSubmit={handleSubmit(onSubmit)}>
         <NavLink to='/auth' className='auth__header'>
           <ArrowL />
           <span>вход в личный кабинет</span>
@@ -76,7 +82,7 @@ export const ForgotPassword = () => {
             <Email
               validation={emailValidation}
               showTooltip={showEmailTooltip}
-              showBorder={Boolean(errors.email || errorMessage)}
+              showBorder={!!(errors.email || errorMessage)}
             />
           </div>
 

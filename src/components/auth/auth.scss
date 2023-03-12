@@ -51,6 +51,7 @@
   &__form {
     position: relative;
     max-width: 528px;
+    flex-grow: 1;
     margin: 0 auto;
     overflow: hidden;
 
@@ -144,7 +145,7 @@
     @include infoL;
     min-height: 16px;
 
-    span {
+    &.red {
       color: $negative;
     }
   }
@@ -182,6 +183,15 @@
       text-transform: uppercase;
       @include butS-m;
       margin-left: 16px;
+      color: $dark;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .auth {
+    &__step {
+      padding: 24px 16px;
     }
   }
 }

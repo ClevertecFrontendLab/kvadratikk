@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RegInputs } from '../../interfaces/inputs';
@@ -15,21 +16,17 @@ import { Step3 } from './steps/step3';
 
 import './auth.scss';
 
-const emptyForm = {
-  login: '',
-  name: '',
-  password: '',
-  tel: '',
-  email: '',
-  surname: '',
-};
-
 export const SignIn = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, code } = useSelector((state: RootState) => state.registration);
 
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState<RegInputs>(emptyForm);
+
+  const form = useForm<RegInputs>({
+    mode: 'all',
+  });
+
+  const { handleSubmit, reset, getValues } = form;
 
   const otherCode = code && code !== 200 && code !== 400;
 
@@ -43,10 +40,16 @@ export const SignIn = () => {
     if (loading === 'succeeded') dispatch(setIsLoading(false));
 
     if (code) setStep(1);
-    if (code === 400) setFormValues(emptyForm);
-  }, [code, dispatch, loading]);
+    if (code === 400) reset();
+  }, [code, dispatch, loading, reset]);
 
   const onSubmit = (data: RegInputs) => {
+    if (Object.keys(data).length < 6) {
+      setStep(step + 1);
+
+      return;
+    }
+
     dispatch(createUser(data));
   };
 
@@ -54,27 +57,15 @@ export const SignIn = () => {
     <Fragment>
       {code === 200 && <RegSuccess />}
       {code === 400 && <RegExist />}
-      {otherCode && <RegFail handleSubmit={() => onSubmit(formValues)} />}
+      {otherCode && <RegFail handleSubmit={() => onSubmit(getValues())} />}
 
-      <div className='auth__form'>
+      <form className='auth__form' data-test-id='register-form' onSubmit={handleSubmit(onSubmit)}>
         <div className='form-container' style={{ right: `${(stepWidth + stepMargin) * (step - 1)}px` }}>
-          <Step1
-            stepStyle={stepStyle}
-            setStep={setStep}
-            step={step}
-            formValues={formValues}
-            setFormValues={setFormValues}
-          />
-          <Step2
-            stepStyle={stepStyle}
-            setStep={setStep}
-            step={step}
-            formValues={formValues}
-            setFormValues={setFormValues}
-          />
-          <Step3 stepStyle={stepStyle} formValues={formValues} setFormValues={setFormValues} />
+          <Step1 stepStyle={stepStyle} form={form} />
+          {step >= 2 && <Step2 stepStyle={stepStyle} form={form} />}
+          {step >= 3 && <Step3 stepStyle={stepStyle} form={form} />}
         </div>
-      </div>
+      </form>
     </Fragment>
   );
 };

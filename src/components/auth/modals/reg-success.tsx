@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 
 export const RegSuccess = () => {
   return (
-    <div className='auth__modal'>
+    <div className='auth__modal' data-test-id='status-block'>
       <div className='auth__top'>
         <h4>Регистрация успешна</h4>
       </div>

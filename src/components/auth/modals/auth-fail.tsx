@@ -1,6 +1,6 @@
 export const AuthFail = ({ handleSubmit }: { handleSubmit: () => void }) => {
   return (
-    <div className='auth__modal'>
+    <div className='auth__modal' data-test-id='status-block'>
       <div className='auth__top'>
         <h4>Вход не выполнен</h4>
       </div>

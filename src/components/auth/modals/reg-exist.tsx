@@ -1,18 +1,18 @@
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { setCode } from '../../../store/slices/registration-slice';
+import { resetRegistration } from '../../../store/slices/registration-slice';
 import { AppDispatch } from '../../../store/store';
 
 export const RegExist = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleClick = () => {
-    dispatch(setCode(null));
+    dispatch(resetRegistration());
   };
 
   return (
-    <div className='auth__modal'>
+    <div className='auth__modal' data-test-id='status-block'>
       <div className='auth__top'>
         <h4>Данные не сохранились</h4>
       </div>

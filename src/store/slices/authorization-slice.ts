@@ -20,7 +20,14 @@ const initialState: {
 export const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.jwt = '';
+      state.user = {};
+      state.loading = 'idle';
+      state.code = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(createAuthUser.pending, (state) => {
       state.loading = 'pending';
@@ -38,4 +45,5 @@ export const authorizationSlice = createSlice({
   },
 });
 
+export const { logout } = authorizationSlice.actions;
 export const authorizationReducer = authorizationSlice.reducer;

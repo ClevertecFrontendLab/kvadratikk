@@ -1,22 +1,14 @@
-export interface Step1Inputs {
-  login: string;
+export interface RegInputs {
+  username: string;
   password: string;
-}
-
-export interface Step2Inputs {
-  name: string;
-  surname: string;
-}
-
-export interface Step3Inputs {
-  tel: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
   email: string;
 }
 
-export interface RegInputs extends Step1Inputs, Step2Inputs, Step3Inputs {}
-
 export interface AuthInputs {
-  login: string;
+  identifier: string;
   password: string;
 }
 
@@ -26,5 +18,5 @@ export interface EmailInputs {
 
 export interface PasswordsInputs {
   password: string;
-  repeat: string;
+  passwordConfirmation: string;
 }

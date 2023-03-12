@@ -11,7 +11,7 @@ export const modifyTitle = (title: string, search: string) => {
     return (
       <Fragment key={key}>
         {word}
-        {searchWords?.[idx] ? <span data-test-id='highlight-matches'>{searchWords[idx]}</span> : ''}
+        {searchWords?.[idx] && <span data-test-id='highlight-matches'>{searchWords[idx]}</span>}
       </Fragment>
     );
   });

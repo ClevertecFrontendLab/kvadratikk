@@ -2,10 +2,12 @@ export const Login = ({
   validation,
   showTooltip,
   showBorder,
+  placeholder,
 }: {
   validation: object;
-  showTooltip: () => string | JSX.Element[];
+  showTooltip: () => JSX.Element | JSX.Element[];
   showBorder: boolean;
+  placeholder?: string;
 }) => {
   return (
     <label className='auth__label'>
@@ -13,10 +15,10 @@ export const Login = ({
         className={showBorder ? 'border-error' : ''}
         type='text'
         autoComplete='username'
-        placeholder='Придумайте логин для входа'
+        placeholder={placeholder || 'Придумайте логин для входа'}
         {...validation}
       />
-      <div className='auth__tooltip'>{showTooltip()}</div>
+      {showTooltip()}
     </label>
   );
 };

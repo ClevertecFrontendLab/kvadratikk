@@ -6,12 +6,13 @@ export const Tel = ({
   showBorder,
 }: {
   validation: object;
-  showTooltip: () => string | JSX.Element[];
+  showTooltip: () => JSX.Element | JSX.Element[];
   showBorder: boolean;
 }) => {
   return (
     <label className='auth__label'>
       <MaskedInput
+        name='phone'
         mask={['+', '3', '7', '5', ' ', '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
         className={showBorder ? 'border-error' : ''}
         type='tel'
@@ -19,7 +20,7 @@ export const Tel = ({
         placeholderChar='x'
         {...validation}
       />
-      <div className='auth__tooltip'>{showTooltip()}</div>
+      {showTooltip()}
     </label>
   );
 };

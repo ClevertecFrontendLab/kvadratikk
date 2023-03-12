@@ -63,17 +63,8 @@ export const getBook = createAsyncThunk<BookItem, string, { state: RootState }>(
 );
 
 export const createUser = createAsyncThunk('users/createUser', async (data: RegInputs, { rejectWithValue }) => {
-  const { login: username, password, name: firstName, surname: lastName, tel: phone, email } = data;
-
   try {
-    const response = await axios.post(`${AUTH_URL}/register`, {
-      email,
-      username,
-      password,
-      firstName,
-      lastName,
-      phone,
-    });
+    const response = await axios.post(`${AUTH_URL}/register`, data);
 
     return response.status;
   } catch (e) {
@@ -87,13 +78,8 @@ export const createUser = createAsyncThunk('users/createUser', async (data: RegI
 export const createAuthUser = createAsyncThunk(
   'users/createAuthUser',
   async (data: AuthInputs, { rejectWithValue }) => {
-    const { login: identifier, password } = data;
-
     try {
-      const response = await axios.post(AUTH_URL, {
-        identifier,
-        password,
-      });
+      const response = await axios.post(AUTH_URL, data);
 
       const { jwt, user } = response.data;
 
@@ -129,10 +115,9 @@ export const forgotPassword = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   'users/resetPassword',
-  async (data: { password: string; repeat: string; code: string }, { rejectWithValue }) => {
+  async (data: { password: string; passwordConfirmation: string; code: string }, { rejectWithValue }) => {
     try {
-      const { password, repeat: passwordConfirmation, code } = data;
-      const response = await axios.post(`${USER_URL}/reset-password`, { password, passwordConfirmation, code });
+      const response = await axios.post(`${USER_URL}/reset-password`, data);
 
       return response.data;
     } catch (e) {

@@ -10,12 +10,14 @@ export const Password = ({
   showBorder,
   showCheck,
   placeholder,
+  isEmpty,
 }: {
   validation: object;
-  showTooltip: () => string | JSX.Element[];
+  showTooltip: () => JSX.Element | JSX.Element[];
   showBorder: boolean;
   showCheck: boolean;
   placeholder?: string;
+  isEmpty: boolean;
 }) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
@@ -35,9 +37,10 @@ export const Password = ({
           setIsPasswordHidden(!isPasswordHidden);
         }}
       >
-        {isPasswordHidden ? <EyeClosed /> : <Eye />}
+        {isEmpty ? '' : isPasswordHidden ? <EyeClosed /> : <Eye />}
       </button>
-      <div className='auth__tooltip'>{showTooltip()}</div>
+
+      {showTooltip()}
     </label>
   );
 };

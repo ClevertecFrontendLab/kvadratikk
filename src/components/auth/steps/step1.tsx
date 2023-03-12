@@ -1,58 +1,47 @@
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 
-import { RegInputs, Step1Inputs } from '../../../interfaces/inputs';
-import { RootState } from '../../../store/store';
-import { createLoginTooltip, createPasswordTooltip, loginErrors, passwordErrors } from '../data';
+import { RegInputs } from '../../../interfaces/inputs';
+import { loginErrors, passwordErrors } from '../data';
 import { Login } from '../fields/login';
 import { Password } from '../fields/password';
 
 export const Step1 = ({
   stepStyle,
-  step,
-  setStep,
-  formValues,
-  setFormValues,
+  form,
 }: {
   stepStyle: {
     minWidth: number;
     marginRight: number;
   };
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-  formValues: RegInputs;
-  setFormValues: React.Dispatch<React.SetStateAction<RegInputs>>;
+  form: UseFormReturn<RegInputs>;
 }) => {
-  const { code } = useSelector((state: RootState) => state.registration);
-
   const [isLoginBlur, setIsLoginBlur] = useState(false);
   const [isPasswordBlur, setIsPasswordBlur] = useState(false);
 
-  const form = useForm<Step1Inputs>({
-    mode: 'all',
-  });
-
   const {
     register,
-    handleSubmit,
     watch,
-    reset,
     formState: { errors },
   } = form;
 
-  useEffect(() => {
-    if (code === 400) reset();
-  }, [code, reset]);
-
   const loginValidation = {
-    ...register('login', {
+    ...register('username', {
       required: true,
       validate: {
-        checkOnlyNumbers: (value) => !/^\d+$/gi.test(value),
+        checkOnlyNumbers: (value) => {
+          if (/^\d+$/gi.test(value)) return false;
+          if (/[а-я]/gi.test(value) && /\d/gi.test(value)) return false;
+
+          return true;
+        },
         checkOnlyLetters: (value) => !/^[a-z]+$/gi.test(value),
-        checkOther: (value) => /[\d]/gi.test(value) && /[a-z]/gi.test(value),
+        checkOther: (value) => {
+          if (/[а-я]/gi.test(value) && !/\d/gi.test(value)) return false;
+
+          return true;
+        },
       },
       onChange: () => {
         setIsLoginBlur(false);
@@ -63,16 +52,16 @@ export const Step1 = ({
     }),
   };
 
-  const isLoginBlurError = isLoginBlur && errors.login && errors.login?.type !== 'required';
+  const isLoginBlurError = isLoginBlur && errors.username && errors.username?.type !== 'required';
 
   const showLoginTooltip = () => {
-    const tooltip = 'Используйте для логина латинский алфавит и цифры';
-    const error = loginErrors[errors.login?.type as keyof typeof loginErrors];
+    const error = loginErrors[errors.username?.type as keyof typeof loginErrors];
 
-    if (isLoginBlurError) return createLoginTooltip(tooltip);
+    if (isLoginBlurError) return loginErrors.blur;
+    if (errors.username?.type === 'required' && !isLoginBlur) return loginErrors.tooltip;
     if (error) return error;
 
-    return tooltip;
+    return loginErrors.tooltip;
   };
 
   const passwordValidation = {
@@ -96,46 +85,46 @@ export const Step1 = ({
   const isPasswordBlurError = isPasswordBlur && errors.password && errors.password?.type !== 'required';
 
   const showPasswordTooltip = () => {
-    const tooltip = 'Пароль не менее 8 символов, с заглавной буквой и цифрой';
     const error = passwordErrors[errors.password?.type as keyof typeof passwordErrors];
 
-    if (isPasswordBlurError) return createPasswordTooltip(tooltip);
+    if (isPasswordBlurError) return passwordErrors.blur;
+    if (errors.password?.type === 'required' && !isPasswordBlur) return passwordErrors.tooltip;
     if (error) return error;
 
-    return tooltip;
-  };
-
-  const onSubmit = (data: Step1Inputs) => {
-    setFormValues({ ...formValues, ...data });
-    setStep(step + 1);
+    return passwordErrors.tooltip;
   };
 
   return (
-    <form className='sign-in__step' style={stepStyle} onSubmit={handleSubmit(onSubmit)}>
-      <div className='sign-in__top'>
+    <div className='auth__step' style={stepStyle}>
+      <div className='auth__top'>
         <h4>Регистрация</h4>
         <span>1 шаг из 3</span>
       </div>
-      <div className='sign-in__fields'>
+      <div className='auth__fields'>
         <Login
           validation={loginValidation}
           showTooltip={showLoginTooltip}
-          showBorder={Boolean(isLoginBlurError || errors.login?.type === 'required')}
+          showBorder={!!(isLoginBlurError || (errors.username?.type === 'required' && isLoginBlur))}
         />
         <Password
           validation={passwordValidation}
           showTooltip={showPasswordTooltip}
-          showBorder={Boolean(isPasswordBlurError || errors.password?.type === 'required')}
-          showCheck={Boolean(!errors.password && watch('password'))}
+          showBorder={!!(isPasswordBlurError || (errors.password?.type === 'required' && isPasswordBlur))}
+          showCheck={!!(!errors.password && watch('password'))}
+          isEmpty={!watch('password')}
         />
       </div>
-      <button type='submit' className='btn sign-in__submit'>
+      <button
+        type='submit'
+        className='btn auth__submit'
+        disabled={!!(isLoginBlurError || isPasswordBlurError || Object.keys(errors).length)}
+      >
         следующий шаг
       </button>
-      <div className='sign-in__transition'>
+      <div className='auth__transition'>
         <span>Есть учётная запись?</span>
         <NavLink to='/auth'>войти</NavLink>
       </div>
-    </form>
+    </div>
   );
 };

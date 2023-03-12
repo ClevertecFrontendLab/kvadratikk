@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { forgotPassword, resetPassword } from '../thunks';
 
@@ -16,8 +16,9 @@ export const recoverySlice = createSlice({
   name: 'recovery',
   initialState,
   reducers: {
-    setRecoveryLoading: (state, { payload }: PayloadAction<Loading>) => {
-      state.loading = payload;
+    resetRecovery: (state) => {
+      state.loading = 'idle';
+      state.errorMessage = '';
     },
   },
   extraReducers: (builder) => {
@@ -44,5 +45,5 @@ export const recoverySlice = createSlice({
   },
 });
 
-export const { setRecoveryLoading } = recoverySlice.actions;
+export const { resetRecovery } = recoverySlice.actions;
 export const recoveryReducer = recoverySlice.reducer;
