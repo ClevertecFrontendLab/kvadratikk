@@ -1,7 +1,7 @@
-import { Menu } from '../../components/menu/menu';
-import { Rules } from '../agreement/rules';
+import { Menu } from '../../../components/menu/menu';
+import { Rules } from '../rules';
 
-import '../agreement/agreement-page';
+import '../rules.scss';
 
 export const TermsPage = () => (
   <section className='terms-page'>

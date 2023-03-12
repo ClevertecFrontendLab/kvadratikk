@@ -37,12 +37,8 @@ export const booksSlice = createSlice({
       state.loading = 'pending';
     });
     builder.addCase(getGenres.fulfilled, (state, { payload }) => {
-      try {
-        state.genres = payload;
-        state.loading = state.books.length ? 'succeeded' : 'pending';
-      } catch {
-        state.loading = 'failed';
-      }
+      state.genres = payload;
+      state.loading = state.books.length ? 'succeeded' : 'pending';
     });
     builder.addCase(getGenres.rejected, (state) => {
       state.loading = 'failed';

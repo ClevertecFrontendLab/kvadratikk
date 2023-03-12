@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ReactComponent as Close } from '../../../assets/icons/close.svg';
@@ -18,7 +18,7 @@ export const Search = () => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className={`search__wrapper ${showInput ? 'visible' : ''}`}>
         <input
           data-test-id='input-search'
@@ -51,6 +51,6 @@ export const Search = () => {
       >
         <SearchIcon />
       </button>
-    </React.Fragment>
+    </Fragment>
   );
 };

@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 
+import { logout } from '../../store/slices/authorization-slice';
 import { setIsExpandedMenu } from '../../store/slices/menu-slice';
 import { RootState } from '../../store/store';
 
@@ -19,6 +20,10 @@ export const Menu = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
   document.body.addEventListener('click', (e: MouseEvent) => {
     if (menuRef.current && e.target !== menuRef.current) dispatch(setIsExpandedMenu(false));
   });
+
+  const handleLogoutClick = () => {
+    dispatch(logout());
+  };
 
   return (
     <nav
@@ -57,14 +62,14 @@ export const Menu = ({ isBurgerMenu }: { isBurgerMenu?: boolean }) => {
         {isExpandedMenu && (
           <div className='menu__profile'>
             <li>
-              <h5>
-                <button type='button'>Профиль</button>
-              </h5>
+              <NavLink to='/auth'>
+                <h5>Профиль</h5>
+              </NavLink>
             </li>
-            <li>
-              <h5>
-                <button type='button'>Выход</button>
-              </h5>
+            <li data-test-id={isBurgerMenu ? 'exit-button' : ''}>
+              <NavLink to='/auth' onClick={handleLogoutClick}>
+                <h5>Выход</h5>
+              </NavLink>
             </li>
           </div>
         )}

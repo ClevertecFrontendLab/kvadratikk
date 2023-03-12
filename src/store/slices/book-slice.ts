@@ -26,12 +26,8 @@ export const bookSlice = createSlice({
       state.loading = 'pending';
     });
     builder.addCase(getBook.fulfilled, (state, { payload }) => {
-      try {
-        state.book = payload;
-        state.loading = 'succeeded';
-      } catch {
-        state.loading = 'failed';
-      }
+      state.book = payload;
+      state.loading = 'succeeded';
     });
     builder.addCase(getBook.rejected, (state) => {
       state.loading = 'failed';

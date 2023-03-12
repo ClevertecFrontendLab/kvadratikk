@@ -23,28 +23,58 @@
       fill: $btn-hover-rgb;
     }
   }
+
+  .profile {
+    position: relative;
+
+    &__button {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    &__options {
+      text-align: right;
+      z-index: 1;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: $gblack5;
+      width: 130%;
+      right: 0;
+      box-shadow: 0px 2px 4px rgba(191, 196, 201, 0.2), 0px 3px 4px rgba(191, 196, 201, 0.18),
+        0px 1px 5px rgba(191, 196, 201, 0.24);
+      border-radius: 10px;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.15s;
+
+      li {
+        padding: 15px;
+      }
+
+      &.visible {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
+    img {
+      width: 58px;
+      height: 58px;
+      filter: drop-shadow(0px 2px 4px rgba(191, 196, 201, 0.2)) drop-shadow(0px 3px 4px rgba(191, 196, 201, 0.18))
+        drop-shadow(0px 1px 5px rgba(191, 196, 201, 0.24));
+      border-radius: 150px;
+    }
+
+    span {
+      @include subS;
+    }
+  }
 }
 
 .logo {
   max-width: 165px;
-}
-
-.profile {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-
-  img {
-    width: 58px;
-    height: 58px;
-    filter: drop-shadow(0px 2px 4px rgba(191, 196, 201, 0.2)) drop-shadow(0px 3px 4px rgba(191, 196, 201, 0.18))
-      drop-shadow(0px 1px 5px rgba(191, 196, 201, 0.24));
-    border-radius: 150px;
-  }
-
-  span {
-    @include subS;
-  }
 }
 
 @media (max-width: 768px) {

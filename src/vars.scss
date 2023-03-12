@@ -49,6 +49,7 @@ $gblack5: #f9f9fa;
   font-size: 14px;
   line-height: 18px;
   font-weight: 400;
+  letter-spacing: 0.2px;
 }
 
 @mixin bodyS-m {
@@ -84,6 +85,14 @@ $gblack5: #f9f9fa;
 @mixin butS-m {
   font-size: 12px;
   letter-spacing: 0.2px;
+  font-weight: 600;
+}
+
+@mixin h3-m {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: 0.1px;
 }
 
 @mixin h4 {
