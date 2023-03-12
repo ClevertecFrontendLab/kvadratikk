@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -21,6 +21,7 @@ export const LogIn = () => {
   const navigate = useNavigate();
   const { loading, code } = useSelector((state: RootState) => state.authorization);
 
+  const [, setIsLoginBlur] = useState(false);
   const otherCode = code && code !== 200 && code !== 400;
 
   const {
@@ -44,6 +45,12 @@ export const LogIn = () => {
   const loginValidation = {
     ...register('identifier', {
       required: true,
+      onChange: () => {
+        setIsLoginBlur(false);
+      },
+      onBlur: () => {
+        setIsLoginBlur(true);
+      },
     }),
   };
 
