@@ -1,0 +1,3 @@
+.drawer :global(.ant-drawer-content-wrapper.ant-drawer-content-wrapper) {
+    width: 360px;
+}
