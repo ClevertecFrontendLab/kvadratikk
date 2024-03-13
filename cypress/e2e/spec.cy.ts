@@ -233,6 +233,7 @@ describe('Sprint 5', () => {
                 sendNotification: false,
             },
         }).as('getUser');
+        cy.wait('@getUser');
         cy.intercept('GET', 'tariff-list', {
             statusCode: 200,
             body: [
@@ -259,7 +260,6 @@ describe('Sprint 5', () => {
                 },
             ],
         }).as('getTarifList');
-        cy.wait('@getUser');
 
         // кнопка назад
         cy.get(`[data-test-id=${DATA_TEST_ID.headerSettings}]`).click();

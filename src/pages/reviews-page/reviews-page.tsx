@@ -43,11 +43,11 @@ export const ReviewsPage = () => {
                             })}
                         >
                             {isAllReview
-                                ? data
-                                      .toSorted((a, b) => moment(b.createdAt).diff(a.createdAt))
+                                ? [...data]
+                                      .sort((a, b) => moment(b.createdAt).diff(a.createdAt))
                                       .map((card) => <ReviewCard key={card.id} {...card} />)
-                                : data
-                                      .toSorted((a, b) => moment(b.createdAt).diff(a.createdAt))
+                                : [...data]
+                                      .sort((a, b) => moment(b.createdAt).diff(a.createdAt))
                                       .slice(0, 4)
                                       .map((card) => <ReviewCard key={card.id} {...card} />)}
                         </div>
