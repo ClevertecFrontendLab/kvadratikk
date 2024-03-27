@@ -275,7 +275,6 @@ describe('Sprint 5', () => {
                 },
             },
         ).as('getUser');
-        cy.wait('@getUser');
         cy.intercept(
             {
                 method: 'GET',
@@ -308,6 +307,7 @@ describe('Sprint 5', () => {
                 ],
             },
         ).as('getTarifList');
+        cy.wait('@getUser');
 
         // кнопка назад
         cy.get(`[data-test-id=${DATA_TEST_ID.headerSettings}]`).click();
