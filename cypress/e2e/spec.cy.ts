@@ -307,6 +307,7 @@ describe('Sprint 5', () => {
                 ],
             },
         ).as('getTarifList');
+        cy.wait(2000);
         cy.wait('@getUser');
 
         // кнопка назад
