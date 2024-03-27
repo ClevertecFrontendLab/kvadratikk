@@ -49,32 +49,58 @@ describe('Sprint 5', () => {
         }
     }
 
-    beforeEach(() => {
+    function beforeEach(testName: string) {
         cy.visit('/');
         cy.intercept('POST', 'auth/login', { accessToken: 'SUPERUSER' }).as('login');
         cy.visit('/auth');
         cy.get('[data-test-id=login-email]').type('valadzkoaliaksei@tut.by');
         cy.get('[data-test-id=login-password]').type('1234qqQQ');
         cy.get('[data-test-id=login-submit-button]').click();
-        cy.url().should('include', '/main');
-    });
 
-    it('profile page', () => {
-        // получение данных пользователя при входе
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'me',
-            },
-            {
+        if (testName === 'profile') {
+            cy.intercept('GET', 'me', {
                 statusCode: 200,
                 body: {
                     email: 'valadzkoaliaksei@tut.by',
                     readyForJointTraining: false,
                     sendNotification: false,
                 },
-            },
-        ).as('getUser');
+            }).as('getUser');
+        }
+
+        if (testName === 'profileGoogle') {
+            cy.intercept('GET', 'me', {
+                statusCode: 200,
+                body: {
+                    email: 'thebestdeveloperintheworld@gmail.com',
+                    imgSrc: 'https://lh3.googleusercontent.com/a/ACg8ocK7Zxx6eMSuA-4_oUDsUIoh-RERhwB6mjReSs5L_kjQeg=s96-c',
+                    readyForJointTraining: false,
+                    sendNotification: false,
+                },
+            }).as('getUser');
+        }
+
+        if (testName === 'settingsPro') {
+            cy.intercept('GET', 'me', {
+                statusCode: 200,
+                body: {
+                    email: 'valadzkoaliaksei@tut.by',
+                    readyForJointTraining: true,
+                    sendNotification: false,
+                    tariff: {
+                        tariffId: '65df21ca9013cb64beacbd56',
+                        expired: '2025-03-09T10:18:40.805Z',
+                    },
+                },
+            }).as('getUser');
+        }
+
+        cy.url().should('include', '/main');
+    }
+
+    it('profile page', () => {
+        // получение данных пользователя при входе
+        beforeEach('profile');
         cy.wait('@getUser');
 
         // страница профиля без аватара
@@ -98,17 +124,11 @@ describe('Sprint 5', () => {
         cy.get('input[type=file]').selectFile('cypress/fixtures/image.png', {
             force: true,
         });
-        cy.intercept(
-            {
-                method: 'POST',
-                url: 'upload-image',
-            },
-            {
-                statusCode: 409,
-                error: 'Conflict',
-                message: 'Файл слишком большой',
-            },
-        ).as('uploadBigFile');
+        cy.intercept('POST', 'upload-image', {
+            statusCode: 409,
+            error: 'Conflict',
+            message: 'Файл слишком большой',
+        }).as('uploadBigFile');
         cy.wait('@uploadBigFile');
         takeScreenshots('modal-big-photo', resolutionLaptop);
         cy.get(`[data-test-id=${DATA_TEST_ID.bigFileErrorClose}`).click();
@@ -118,39 +138,27 @@ describe('Sprint 5', () => {
         cy.get('input[type=file]').selectFile('cypress/fixtures/image.png', {
             force: true,
         });
-        cy.intercept(
-            {
-                method: 'POST',
-                url: 'upload-image',
+        cy.intercept('POST', 'upload-image', {
+            statusCode: 200,
+            body: {
+                name: '65df1fc091548a261a8f8c97.png',
+                url: '/media/avatar/65df1fc091548a261a8f8c97.png',
             },
-            {
-                statusCode: 200,
-                body: {
-                    name: '65df1fc091548a261a8f8c97.png',
-                    url: '/media/avatar/65df1fc091548a261a8f8c97.png',
-                },
-            },
-        ).as('uploadFile');
+        }).as('uploadFile');
         cy.wait('@uploadFile');
         cy.get(`[data-test-id=${DATA_TEST_ID.profileSubmit}]`).should('be.enabled');
 
         // обновление всех полей
-        cy.intercept(
-            {
-                method: 'PUT',
-                url: 'user',
+        cy.intercept('PUT', 'user', {
+            statusCode: 200,
+            body: {
+                imgSrc: 'https://training-api.clevertec.ru/media/avatar/65df1fc091548a261a8f8c97.png',
+                firstName: 'Клевертек',
+                lastName: 'Клевертекович',
+                birthday: '2000-02-05T17:18:46.204Z',
+                email: 'thebestdeveloperintheworld@gmail.com',
             },
-            {
-                statusCode: 200,
-                body: {
-                    imgSrc: 'https://training-api.clevertec.ru/media/avatar/65df1fc091548a261a8f8c97.png',
-                    firstName: 'Клевертек',
-                    lastName: 'Клевертекович',
-                    birthday: '2000-02-05T17:18:46.204Z',
-                    email: 'thebestdeveloperintheworld@gmail.com',
-                },
-            },
-        ).as('updateUser');
+        }).as('updateUser');
         cy.get(`[data-test-id=${DATA_TEST_ID.profileName}]`).type('Клевертек');
         cy.get(`[data-test-id=${DATA_TEST_ID.profileSurname}]`).type('Клевертекович');
 
@@ -203,19 +211,13 @@ describe('Sprint 5', () => {
         cy.get(`[data-test-id=${DATA_TEST_ID.alert}]`).within(() => cy.get('button').click());
 
         // ошибка при отправке
-        cy.intercept(
-            {
-                method: 'PUT',
-                url: 'user',
+        cy.intercept('PUT', 'user', {
+            statusCode: 500,
+            body: {
+                error: '',
+                message: '',
             },
-            {
-                statusCode: 500,
-                body: {
-                    error: '',
-                    message: '',
-                },
-            },
-        ).as('updateUserWithError');
+        }).as('updateUserWithError');
         cy.get(`[data-test-id=${DATA_TEST_ID.profileName}]`).clear();
         cy.get(`[data-test-id=${DATA_TEST_ID.profileName}]`).type('кетревлеК');
         cy.get(`[data-test-id=${DATA_TEST_ID.profileSubmit}]`).should('be.enabled');
@@ -225,21 +227,7 @@ describe('Sprint 5', () => {
     });
 
     it('profile page with google photo', () => {
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'me',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'thebestdeveloperintheworld@gmail.com',
-                    imgSrc: 'https://lh3.googleusercontent.com/a/ACg8ocK7Zxx6eMSuA-4_oUDsUIoh-RERhwB6mjReSs5L_kjQeg=s96-c',
-                    readyForJointTraining: false,
-                    sendNotification: false,
-                },
-            },
-        ).as('getUser');
+        beforeEach('profileGoogle');
         cy.wait('@getUser');
         cy.get(`[data-test-id=${DATA_TEST_ID.menuButtonProfile}]`).click();
         cy.url().should('include', '/profile');
@@ -261,53 +249,34 @@ describe('Sprint 5', () => {
     });
 
     it('settings page', () => {
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'me',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'valadzkoaliaksei@tut.by',
-                    readyForJointTraining: false,
-                    sendNotification: false,
-                },
-            },
-        ).as('getUser');
+        beforeEach('profile');
         cy.wait('@getUser');
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'tariff-list',
-            },
-            {
-                statusCode: 200,
-                body: [
-                    {
-                        _id: '65df21ca9013cb64beacbd56',
-                        name: 'Pro',
-                        periods: [
-                            {
-                                text: '6 месяцев',
-                                cost: 5.5,
-                                days: 182,
-                            },
-                            {
-                                text: '9 месяцев',
-                                cost: 8.5,
-                                days: 274,
-                            },
-                            {
-                                text: '12 месяцев',
-                                cost: 10,
-                                days: 365,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ).as('getTarifList');
+        cy.intercept('GET', 'tariff-list', {
+            statusCode: 200,
+            body: [
+                {
+                    _id: '65df21ca9013cb64beacbd56',
+                    name: 'Pro',
+                    periods: [
+                        {
+                            text: '6 месяцев',
+                            cost: 5.5,
+                            days: 182,
+                        },
+                        {
+                            text: '9 месяцев',
+                            cost: 8.5,
+                            days: 274,
+                        },
+                        {
+                            text: '12 месяцев',
+                            cost: 10,
+                            days: 365,
+                        },
+                    ],
+                },
+            ],
+        }).as('getTarifList');
 
         // кнопка назад
         cy.get(`[data-test-id=${DATA_TEST_ID.headerSettings}]`).click();
@@ -369,16 +338,10 @@ describe('Sprint 5', () => {
         takeScreenshots('settings-page-with-sider', resolutionMobile);
 
         // отправить запрос, модалка
-        cy.intercept(
-            {
-                method: 'POST',
-                url: 'tariff',
-            },
-            {
-                statusCode: 200,
-                body: {},
-            },
-        ).as('buyTarif');
+        cy.intercept('POST', 'tariff', {
+            statusCode: 200,
+            body: {},
+        }).as('buyTarif');
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffSubmit}]`).should('be.disabled');
         cy.get('[data-test-id=tariff-10]').click();
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffSubmit}]`).should('be.enabled');
@@ -396,56 +359,33 @@ describe('Sprint 5', () => {
     });
 
     it('settings page pro', () => {
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'me',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'valadzkoaliaksei@tut.by',
-                    readyForJointTraining: true,
-                    sendNotification: false,
-                    tariff: {
-                        tariffId: '65df21ca9013cb64beacbd56',
-                        expired: '2025-03-09T10:18:40.805Z',
-                    },
+        beforeEach('settingsPro');
+        cy.intercept('GET', 'tariff-list', {
+            statusCode: 200,
+            body: [
+                {
+                    _id: '65df21ca9013cb64beacbd56',
+                    name: 'Pro',
+                    periods: [
+                        {
+                            text: '6 месяцев',
+                            cost: 5.5,
+                            days: 182,
+                        },
+                        {
+                            text: '9 месяцев',
+                            cost: 8.5,
+                            days: 274,
+                        },
+                        {
+                            text: '12 месяцев',
+                            cost: 10,
+                            days: 365,
+                        },
+                    ],
                 },
-            },
-        ).as('getUser');
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'tariff-list',
-            },
-            {
-                statusCode: 200,
-                body: [
-                    {
-                        _id: '65df21ca9013cb64beacbd56',
-                        name: 'Pro',
-                        periods: [
-                            {
-                                text: '6 месяцев',
-                                cost: 5.5,
-                                days: 182,
-                            },
-                            {
-                                text: '9 месяцев',
-                                cost: 8.5,
-                                days: 274,
-                            },
-                            {
-                                text: '12 месяцев',
-                                cost: 10,
-                                days: 365,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ).as('getTarifList');
+            ],
+        }).as('getTarifList');
         cy.wait('@getUser');
         cy.get(`[data-test-id=${DATA_TEST_ID.headerSettings}]`).click();
 
@@ -457,24 +397,18 @@ describe('Sprint 5', () => {
         takeScreenshots('settings-pro-cards', resolutionMobile);
 
         // опции
-        cy.intercept(
-            {
-                method: 'PUT',
-                url: 'user',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'valadzkoaliaksei@tut.by',
-                    readyForJointTraining: false,
-                    sendNotification: false,
-                    tariff: {
-                        tariffId: '65df21ca9013cb64beacbd56',
-                        expired: '2025-03-09T10:18:40.805Z',
-                    },
+        cy.intercept('PUT', 'user', {
+            statusCode: 200,
+            body: {
+                email: 'valadzkoaliaksei@tut.by',
+                readyForJointTraining: false,
+                sendNotification: false,
+                tariff: {
+                    tariffId: '65df21ca9013cb64beacbd56',
+                    expired: '2025-03-09T10:18:40.805Z',
                 },
             },
-        ).as('updateUserTrainings');
+        }).as('updateUserTrainings');
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffTrainings}]`).should(
             'have.attr',
             'aria-checked',
@@ -493,24 +427,18 @@ describe('Sprint 5', () => {
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffTheme}]`).should('be.enabled');
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffTrainings}]`).click();
         cy.wait('@updateUserTrainings');
-        cy.intercept(
-            {
-                method: 'PUT',
-                url: 'user',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'valadzkoaliaksei@tut.by',
-                    readyForJointTraining: false,
-                    sendNotification: true,
-                    tariff: {
-                        tariffId: '65df21ca9013cb64beacbd56',
-                        expired: '2025-03-09T10:18:40.805Z',
-                    },
+        cy.intercept('PUT', 'user', {
+            statusCode: 200,
+            body: {
+                email: 'valadzkoaliaksei@tut.by',
+                readyForJointTraining: false,
+                sendNotification: true,
+                tariff: {
+                    tariffId: '65df21ca9013cb64beacbd56',
+                    expired: '2025-03-09T10:18:40.805Z',
                 },
             },
-        ).as('updateUserNotifications');
+        }).as('updateUserNotifications');
         cy.get(`[data-test-id=${DATA_TEST_ID.tariffTrainings}]`).should(
             'have.attr',
             'aria-checked',
@@ -540,100 +468,75 @@ describe('Sprint 5', () => {
     });
 
     it('feedbacks', () => {
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'me',
-            },
-            {
-                statusCode: 200,
-                body: {
-                    email: 'valadzkoaliaksei@tut.by',
-                    readyForJointTraining: false,
-                    sendNotification: false,
+        beforeEach('profile');
+        cy.intercept('GET', 'tariff-list', {
+            statusCode: 200,
+            body: [
+                {
+                    _id: '65df21ca9013cb64beacbd56',
+                    name: 'Pro',
+                    periods: [
+                        {
+                            text: '6 месяцев',
+                            cost: 5.5,
+                            days: 182,
+                        },
+                        {
+                            text: '9 месяцев',
+                            cost: 8.5,
+                            days: 274,
+                        },
+                        {
+                            text: '12 месяцев',
+                            cost: 10,
+                            days: 365,
+                        },
+                    ],
                 },
-            },
-        ).as('getUser');
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'tariff-list',
-            },
-            {
-                statusCode: 200,
-                body: [
-                    {
-                        _id: '65df21ca9013cb64beacbd56',
-                        name: 'Pro',
-                        periods: [
-                            {
-                                text: '6 месяцев',
-                                cost: 5.5,
-                                days: 182,
-                            },
-                            {
-                                text: '9 месяцев',
-                                cost: 8.5,
-                                days: 274,
-                            },
-                            {
-                                text: '12 месяцев',
-                                cost: 10,
-                                days: 365,
-                            },
-                        ],
-                    },
-                ],
-            },
-        ).as('getTarifList');
+            ],
+        }).as('getTarifList');
         cy.wait('@getUser');
         cy.get(`[data-test-id=${DATA_TEST_ID.headerSettings}]`).click();
         cy.wait('@getTarifList');
-        cy.intercept(
-            {
-                method: 'GET',
-                url: 'feedback',
-            },
-            {
-                statusCode: 200,
-                body: [
-                    {
-                        id: '65e4568855c4a5796d525e57',
-                        fullName: null,
-                        imageSrc: null,
-                        message: 'sadfsdafsd',
-                        rating: 3,
-                        createdAt: '2024-03-03T10:52:56.749Z',
-                    },
-                    {
-                        id: '65e4568855c4a5796d525579',
-                        fullName: 'Канье',
-                        message: 'первый',
-                        rating: 3,
-                        imageSrc:
-                            'https://training-api.clevertec.ru/media/avatar/65df1fc091548a261a8f8c97.png',
-                        createdAt: '2021-03-03T10:52:58.749Z',
-                    },
-                    {
-                        id: '65e4568855c4a5796d525e58',
-                        fullName: 'Бабай Бабай',
-                        imageSrc: null,
-                        message: 'текст',
-                        rating: 3,
-                        createdAt: '2024-03-03T10:52:57.749Z',
-                    },
-                    {
-                        id: '65e4566b55c4a5796d525bd7',
-                        fullName: 'Гена Букин',
-                        imageSrc:
-                            'https://lh3.googleusercontent.com/a/ACg8ocIs5m7cLVsb2UqRVPpFTv_imE_EOSlNMdwidbUNPqE0=s96-c',
-                        message: 'really cool app',
-                        rating: 5,
-                        createdAt: '2025-03-03T10:52:27.796Z',
-                    },
-                ],
-            },
-        ).as('getFeedbacks');
+        cy.intercept('GET', 'feedback', {
+            statusCode: 200,
+            body: [
+                {
+                    id: '65e4568855c4a5796d525e57',
+                    fullName: null,
+                    imageSrc: null,
+                    message: 'sadfsdafsd',
+                    rating: 3,
+                    createdAt: '2024-03-03T10:52:56.749Z',
+                },
+                {
+                    id: '65e4568855c4a5796d525579',
+                    fullName: 'Канье',
+                    message: 'первый',
+                    rating: 3,
+                    imageSrc:
+                        'https://training-api.clevertec.ru/media/avatar/65df1fc091548a261a8f8c97.png',
+                    createdAt: '2021-03-03T10:52:58.749Z',
+                },
+                {
+                    id: '65e4568855c4a5796d525e58',
+                    fullName: 'Бабай Бабай',
+                    imageSrc: null,
+                    message: 'текст',
+                    rating: 3,
+                    createdAt: '2024-03-03T10:52:57.749Z',
+                },
+                {
+                    id: '65e4566b55c4a5796d525bd7',
+                    fullName: 'Гена Букин',
+                    imageSrc:
+                        'https://lh3.googleusercontent.com/a/ACg8ocIs5m7cLVsb2UqRVPpFTv_imE_EOSlNMdwidbUNPqE0=s96-c',
+                    message: 'really cool app',
+                    rating: 5,
+                    createdAt: '2025-03-03T10:52:27.796Z',
+                },
+            ],
+        }).as('getFeedbacks');
 
         cy.contains('Смотреть все отзывы').click();
         cy.url().should('include', '/feedbacks');
@@ -641,16 +544,10 @@ describe('Sprint 5', () => {
         takeScreenshots('feedbacks with photo', resolutionLaptop);
         cy.go('back');
 
-        cy.intercept(
-            {
-                method: 'POST',
-                url: 'feedback',
-            },
-            {
-                statusCode: 200,
-                body: {},
-            },
-        ).as('postFeedback');
+        cy.intercept('POST', 'feedback', {
+            statusCode: 200,
+            body: {},
+        }).as('postFeedback');
         cy.contains('Написать отзыв').click();
         cy.get('.ant-modal ul li').eq(4).click();
         cy.get(`[data-test-id=${DATA_TEST_ID.newReviewSubmitBtn}]`).click();
