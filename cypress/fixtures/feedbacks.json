@@ -1,0 +1,18 @@
+{
+    "emptyFeedbacks": [],
+    "feedbacksList": [
+        { "message": "test1", "rating": 1, "createdAt": "2024-01-31T06:57:32.243Z" },
+        { "message": "test2", "rating": 5, "createdAt": "2024-01-30T06:57:32.243Z" },
+        { "message": "test3", "rating": 2, "createdAt": "2024-01-28T06:57:32.243Z" },
+        { "message": "test4", "rating": 3, "createdAt": "2024-01-29T06:57:32.243Z" },
+        { "message": "test5", "rating": 4, "createdAt": "2024-01-27T06:57:32.243Z" }
+    ],
+    "updateFeedbacksList": [
+        { "message": "test1", "rating": 1, "createdAt": "2024-01-31T06:57:32.243Z" },
+        { "message": "test2", "rating": 5, "createdAt": "2024-01-30T06:57:32.243Z" },
+        { "message": "test3", "rating": 2, "createdAt": "2024-01-28T06:57:32.243Z" },
+        { "message": "test4", "rating": 3, "createdAt": "2024-01-29T06:57:32.243Z" },
+        { "message": "test5", "rating": 4, "createdAt": "2024-01-27T06:57:32.243Z" },
+        { "rating": 2, "createdAt": "2024-02-01T06:57:32.243Z" }
+    ]
+}
